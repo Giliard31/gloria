@@ -105,7 +105,7 @@
         .cor.verde {background: linear-gradient(135deg, #66bb6a, #2e7d32);}
         .cor.rosa {background: linear-gradient(135deg, #f06292, #c2185b);}
 
-        /* ===== CONTEÚDO PRINCIPAL — ROLA LIVRE ===== */
+        /* ===== CONTEÚDO PRINCIPAL ===== */
         .conteudo {padding-top: 155px; padding-bottom: 30px; padding-left: 16px; padding-right: 16px; max-width: 580px; margin: 0 auto;}
 
         .mensagem {text-align: center; margin-bottom: 20px;}
@@ -140,59 +140,25 @@
         }
         .status {font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 16px;}
 
-        /* ===== LISTA DE HINOS — TODOS APARECEM AQUI ===== */
+        /* ===== LISTA DE HINOS ===== */
         .lista-hinos {display: flex; flex-direction: column; gap: 6px;}
         .item-hino {
-            padding: 12px 16px; background: var(--surface); border-radius: 10px;
-            cursor: pointer; transition: all 0.2s;
+            padding: 14px 16px; background: var(--surface); border-radius: 10px;
+            cursor: pointer; transition: background 0.15s;
             border-left: 3px solid transparent;
         }
-        .item-hino:hover, .item-hino.ativo {border-left-color: var(--primary); background: var(--paper); transform: translateX(2px);}
+        .item-hino:active {background: var(--paper); border-left-color: var(--primary);}
         .hino-num {font-weight: bold; color: var(--primary); font-size: 0.9rem;}
         .hino-nome {font-size: 1rem; margin: 2px 0 3px;}
         .hino-trecho {font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
-        /* ===== HINO ABERTO — FUNDO FOLHA SUAVE SEM BORDA ===== */
-        .hino-aberto {
-            display: none; margin-top: 24px;
-            background: var(--paper);
-            border-radius: 8px;
-            padding: 30px 24px 34px;
-            position: relative;
-        }
-        .hino-aberto.mostrar {display: block;}
-        
-        .hino-cabecalho {text-align: center; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border);}
-        .hino-cabecalho .numero {font-size: 0.85rem; color: var(--primary); font-weight: bold; letter-spacing: 1px;}
-        .hino-cabecalho .titulo {
-            font-size: 1.3rem; margin-top: 6px; font-family: Georgia, serif;
-            color: var(--primary); font-weight: 600;
-        }
-        .hino-cabecalho .abrir-tela {
-            margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);
-            cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
-            padding: 4px 10px; border-radius: 4px; transition: background 0.2s;
-        }
-        .hino-cabecalho .abrir-tela:hover {background: rgba(139,69,19,0.06);}
-
-        .estrofe {
-            text-align: center; line-height: 26px; margin-bottom: 24px;
-            font-size: 1rem; transition: font-size 0.2s;
-        }
-        .coro {
-            font-weight: 600; color: var(--coro);
-            padding: 6px 12px; margin: 10px 0;
-            background: rgba(139,69,19,0.04);
-            border-radius: 4px;
-        }
-
-        /* ===== TELA CHEIA — SEM FAIXA BRANCA NO TOPO ===== */
+        /* ===== TELA CHEIA — ABRE INSTANTANEAMENTE ===== */
         .tela-cheia {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg); z-index: 200; overflow-y: auto;
-            transform: translateY(100%); transition: transform 0.3s ease;
+            opacity: 0; visibility: hidden; transition: none;
         }
-        .tela-cheia.aberta {transform: translateY(0);}
+        .tela-cheia.aberta {opacity: 1; visibility: visible;}
         
         .tela-cheia .cabecalho {
             position: sticky; top: 0;
@@ -219,9 +185,19 @@
             background: var(--paper);
             min-height: 100vh;
         }
-        .tela-cheia .hino-cabecalho {border-bottom-width: 1px; padding-bottom: 20px; margin-bottom: 30px;}
-        .tela-cheia .estrofe {line-height: 30px; margin-bottom: 30px; font-size: 1.05rem;}
-        .tela-cheia .coro {padding: 10px 20px; margin: 14px 0;}
+        .tela-cheia .hino-cabecalho {text-align: center; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border);}
+        .tela-cheia .hino-cabecalho .numero {font-size: 0.85rem; color: var(--primary); font-weight: bold; letter-spacing: 1px;}
+        .tela-cheia .hino-cabecalho .titulo {font-size: 1.3rem; margin-top: 6px; font-family: Georgia, serif; color: var(--primary); font-weight: 600;}
+        .tela-cheia .estrofe {
+            text-align: center; line-height: 28px; margin-bottom: 24px;
+            font-size: 1rem; transition: font-size 0.2s;
+        }
+        .tela-cheia .coro {
+            font-weight: 600; color: var(--coro);
+            padding: 6px 12px; margin: 10px 0;
+            background: rgba(139,69,19,0.04);
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -231,7 +207,7 @@
     <div class="barra-controles">
         <div class="grupo-botoes">
             <button class="btn-topo" id="btnMenos">A−</button>
-            <span class="fonte-valor" id="fonteValor">18</span>
+            <span class="fonte-valor" id="fonteValor">20</span>
             <button class="btn-topo" id="btnMais">A+</button>
         </div>
         <div class="grupo-botoes">
@@ -261,27 +237,14 @@
     <div class="status" id="status">Carregando hinos...</div>
 </div>
 
-<!-- CONTEÚDO — ROLA LIVREMENTE -->
+<!-- CONTEÚDO — LISTA DE HINOS -->
 <div class="conteudo">
     <div class="mensagem">
         <h1>🎵 Olá! Qual hino nós iremos louvar agora?</h1>
-        <p>Digite ou fale um trecho acima, ou navegue pela lista abaixo.</p>
+        <p>Digite ou fale um trecho acima, ou toque no hino abaixo para ler.</p>
     </div>
 
-    <!-- LISTA DE TODOS OS HINOS -->
-    <div class="lista-hinos" id="listaHinos">
-        <!-- Hinos aparecem aqui -->
-    </div>
-
-    <!-- HINO ABERTO ABAIXO DA LISTA -->
-    <div class="hino-aberto" id="hinoAberto">
-        <div class="hino-cabecalho">
-            <div class="numero" id="hinoAbertoNumero"></div>
-            <h2 class="titulo" id="hinoAbertoTitulo"></h2>
-            <div class="abrir-tela" id="btnAbrirTela">⛶ Abrir em tela cheia</div>
-        </div>
-        <div id="hinoAbertoLetras"></div>
-    </div>
+    <div class="lista-hinos" id="listaHinos"></div>
 </div>
 
 <!-- TELA CHEIA DO HINO -->
@@ -301,8 +264,7 @@
 // ===== VARIÁVEIS =====
 let hinos = [];
 let hinoAtual = null;
-let tamanhoFonte = 18;
-let tamanhoFonteTela = 20;
+let tamanhoFonte = 20;
 let todosOsHinos = [];
 let telaAcesa = false;
 let bloqueioTela = null;
@@ -317,7 +279,7 @@ async function carregarHinos() {
         todosOsHinos = [...hinos];
         mostrarTodosHinos();
         document.getElementById('status').textContent = 
-            hinos.length > 0 ? `✅ ${hinos.length} hinos prontos!` : 'Nenhum hino encontrado.';
+            hinos.length > 0 ? `✅ ${hinos.length} hinos prontos! Toque em um para ler.` : 'Nenhum hino encontrado.';
     } catch (erro) {
         document.getElementById('status').innerHTML = 
             '❌ Não foi possível carregar os hinos.<br>Verifique se o arquivo <b>hinos.txt</b> está na mesma pasta.';
@@ -373,10 +335,10 @@ function parseHinos(texto) {
     return lista;
 }
 
-// ===== MOSTRAR TODOS OS HINOS NA TELA =====
+// ===== MOSTRAR TODOS OS HINOS =====
 function mostrarTodosHinos(listaParaMostrar = todosOsHinos) {
     const listaEl = document.getElementById('listaHinos');
-    listaEl.innerHTML = listaParaMostrar.map(h => {
+    listaEl.innerHTML = listaParaMostrar.map((h, idx) => {
         const indiceReal = todosOsHinos.indexOf(h);
         return `
             <div class="item-hino" data-index="${indiceReal}">
@@ -389,15 +351,10 @@ function mostrarTodosHinos(listaParaMostrar = todosOsHinos) {
 }
 
 // ===== BUSCA =====
-const inputBusca = document.getElementById('inputBusca');
-const hinoAberto = document.getElementById('hinoAberto');
-
-inputBusca.addEventListener('input', function() {
+const inputBusca = document.getElementById('inputBusca.addEventListener('input', function() {
     const termo = this.value.trim();
     if (!termo) {
         mostrarTodosHinos();
-        hinoAberto.classList.remove('mostrar');
-        hinoAtual = null;
         return;
     }
     
@@ -418,8 +375,6 @@ inputBusca.addEventListener('input', function() {
     } else {
         document.getElementById('listaHinos').innerHTML = 
             '<div style="padding:20px;text-align:center;color:var(--text-secondary)">Nenhum hino encontrado</div>';
-        hinoAberto.classList.remove('mostrar');
-        hinoAtual = null;
     }
 });
 
@@ -430,41 +385,17 @@ inputBusca.addEventListener('blur', () => {
     document.getElementById('caixaBusca').classList.remove('focada');
 });
 
-// ===== ABRIR HINO ABAIXO =====
+// ===== ABRIR HINO DIRETO EM TELA CHEIA =====
 document.addEventListener('click', function(e) {
     const item = e.target.closest('.item-hino');
     if (item) {
-        document.querySelectorAll('.item-hino').forEach(el => el.classList.remove('ativo'));
-        item.classList.add('ativo');
         const index = parseInt(item.dataset.index);
-        abrirHinoAbaixo(index);
+        abrirTelaCheia(index);
     }
 });
 
-function abrirHinoAbaixo(index) {
+function abrirTelaCheia(index) {
     hinoAtual = todosOsHinos[index];
-    if (!hinoAtual) return;
-    
-    document.getElementById('hinoAbertoNumero').textContent = `Hino ${hinoAtual.numero}`;
-    document.getElementById('hinoAbertoTitulo').textContent = hinoAtual.titulo;
-    
-    const conteudo = hinoAtual.estrofes.map(est => {
-        const classe = est.coro ? 'estrofe coro' : 'estrofe';
-        return `<div class="${classe}" style="font-size:${tamanhoFonte}px">${est.linhas.join('<br>')}</div>`;
-    }).join('');
-    
-    document.getElementById('hinoAbertoLetras').innerHTML = conteudo;
-    hinoAberto.classList.add('mostrar');
-    hinoAberto.scrollIntoView({behavior: 'smooth', block: 'start'});
-}
-
-// ===== ABRIR EM TELA CHEIA =====
-const telaCheia = document.getElementById('telaCheia');
-const papelTelaCheia = document.getElementById('papelTelaCheia');
-
-document.getElementById('btnAbrirTela').addEventListener('click', abrirTelaCheia);
-
-function abrirTelaCheia() {
     if (!hinoAtual) return;
     
     papelTelaCheia.innerHTML = `
@@ -474,7 +405,7 @@ function abrirTelaCheia() {
         </div>
         ${hinoAtual.estrofes.map(est => {
             const classe = est.coro ? 'estrofe coro' : 'estrofe';
-            return `<div class="${classe}" style="font-size:${tamanhoFonteTela}px">${est.linhas.join('<br>')}</div>`;
+            return `<div class="${classe}" style="font-size:${tamanhoFonte}px">${est.linhas.join('<br>')}</div>`;
         }).join('')}
     `;
     telaCheia.classList.add('aberta');
@@ -529,35 +460,35 @@ btnMic.addEventListener('click', () => {
     }
 });
 
-// ===== TAMANHO DA FONTE — TELA PRINCIPAL =====
+// ===== TAMANHO DA FONTE =====
 const btnMais = document.getElementById('btnMais');
 const btnMenos = document.getElementById('btnMenos');
 const fonteValor = document.getElementById('fonteValor');
 
 function atualizarFonte() {
     fonteValor.textContent = tamanhoFonte;
-    document.querySelectorAll('#hinoAberto .estrofe').forEach(el => {
+    document.querySelectorAll('#papelTelaCheia .estrofe').forEach(el => {
         el.style.fontSize = tamanhoFonte + 'px';
     });
     localStorage.setItem('tamanhoFonte', tamanhoFonte);
 }
 
 btnMais.addEventListener('click', () => {
-    if (tamanhoFonte < 26) {
+    if (tamanhoFonte < 28) {
         tamanhoFonte += 2;
         atualizarFonte();
     }
 });
 
 btnMenos.addEventListener('click', () => {
-    if (tamanhoFonte > 14) {
+    if (tamanhoFonte > 16) {
         tamanhoFonte -= 2;
         atualizarFonte();
     }
 });
 
-tamanhoFonte = parseInt(localStorage.getItem('tamanhoFonte') || '18');
-atualizarFonte();
+tamanhoFonte = parseInt(localStorage.getItem('tamanhoFonte') || '20');
+fonteValor.textContent = tamanhoFonte;
 
 // ===== TAMANHO DA FONTE — TELA CHEIA =====
 const btnMaisTela = document.getElementById('btnMaisTela');
@@ -565,29 +496,27 @@ const btnMenosTela = document.getElementById('btnMenosTela');
 const fonteValorTela = document.getElementById('fonteValorTela');
 
 function atualizarFonteTela() {
-    fonteValorTela.textContent = tamanhoFonteTela;
+    fonteValorTela.textContent = tamanhoFonte;
     document.querySelectorAll('#papelTelaCheia .estrofe').forEach(el => {
-        el.style.fontSize = tamanhoFonteTela + 'px';
+        el.style.fontSize = tamanhoFonte + 'px';
     });
-    localStorage.setItem('tamanhoFonteTela', tamanhoFonteTela);
 }
 
 btnMaisTela.addEventListener('click', () => {
-    if (tamanhoFonteTela < 28) {
-        tamanhoFonteTela += 2;
+    if (tamanhoFonte < 28) {
+        tamanhoFonte += 2;
         atualizarFonteTela();
+        localStorage.setItem('tamanhoFonte', tamanhoFonte);
     }
 });
 
 btnMenosTela.addEventListener('click', () => {
-    if (tamanhoFonteTela > 16) {
-        tamanhoFonteTela -= 2;
+    if (tamanhoFonte > 16) {
+        tamanhoFonte -= 2;
         atualizarFonteTela();
+        localStorage.setItem('tamanhoFonte', tamanhoFonte);
     }
 });
-
-tamanhoFonteTela = parseInt(localStorage.getItem('tamanhoFonteTela') || '20');
-fonteValorTela.textContent = tamanhoFonteTela;
 
 // ===== TEMA =====
 const seletorTema = document.getElementById('seletorTema');
@@ -646,34 +575,45 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-// ===== 📲 PWA — INSTALAÇÃO =====
+// ===== 📲 PWA — INSTALAÇÃO CORRIGIDA =====
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    setTimeout(() => {
-        if (!localStorage.getItem('pwa_dismissed')) {
-            mostrarPromptInstalacao();
-        }
-    }, 4000);
+    console.log('✅ PWA pode ser instalado!');
 });
 
-function mostrarPromptInstalacao() {
-    if (!deferredPrompt) return;
+// Adiciona botão de instalação manual
+function mostrarBotaoInstalar() {
+    if (!deferredPrompt || localStorage.getItem('pwa_instalado')) return;
     
-    if (confirm('📲 Instalar Harpa Cristã?\n\nCrie um ícone na tela inicial e use como aplicativo.')) {
+    const statusEl = document.getElementById('status');
+    statusEl.innerHTML = `
+        ✅ Pronto! 
+        <button style="margin-left:8px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer;font-size:0.85rem;" id="btnInstalar">📲 Instalar App</button>
+    `;
+    
+    document.getElementById('btnInstalar').addEventListener('click', async () => {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                alert('✅ Instalado com sucesso! Procure na sua tela inicial.');
-            }
-            deferredPrompt = null;
-        });
-    } else {
-        localStorage.setItem('pwa_dismissed', 'true');
-    }
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            alert('✅ Instalado com sucesso! Procure na sua tela inicial.');
+            localStorage.setItem('pwa_instalado', 'true');
+        } else {
+            alert('💡 Você pode instalar depois pelo menu do navegador: "Adicionar à tela inicial"');
+        }
+        deferredPrompt = null;
+    });
 }
+
+// Mostra botão após carregar tudo
+setTimeout(mostrarBotaoInstalar, 5000);
+
+window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwa_instalado', 'true');
+    alert('✅ Harpa Cristã instalada com sucesso! Agora é um aplicativo em seu celular.');
+});
 
 // ===== INICIAR =====
 carregarHinos();
@@ -682,3 +622,4 @@ carregarHinos();
 
 </body>
 </html>
+
