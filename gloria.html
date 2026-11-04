@@ -5,392 +5,253 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#8b0000">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>🎵 Harpa Cristã</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSGFycGEgQ3Jpc3TDoSIsInNob3J0X25hbWUiOiJIYXJwYSIsImRlc2NyaXB0aW9uIjoiSGlub3MgZGEgSGFycGEgQ3Jpc3TDoSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjOGIwMDAwIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTkyIDE5MSc+JTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5MicgZmlsbD0nJThiMDAwMCcvJTNFJTNDdGV4dCB4PSc5NicgeT0nMTI1JyBmb250LXNpemU9JzgwJyBmaWxsPSd3aGl0ZScgdGV4dC1hbmNob3I9J21pZGRsZScgZm9udC1mYW1pbHk9J0FyaWFsJz7wn5iPC90ZXh0JTNFPC9zdmc+InR5cGU9ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
     <style>
         :root {
             --primary: #8b0000;
-            --primary-dark: #6b0000;
             --bg: #ffffff;
-            --surface: #f8f8f8;
+            --surface: #f5f5f5;
             --text: #1a1a1a;
-            --text-secondary: #666666;
+            --text-secondary: #757575;
             --border: #e0e0e0;
         }
         .tema-escuro {
             --primary: #b22222;
-            --primary-dark: #8b0000;
             --bg: #121212;
             --surface: #1e1e1e;
-            --text: #eeeeee;
+            --text: #ffffff;
             --text-secondary: #aaaaaa;
             --border: #333333;
         }
+        .tema-azul {
+            --primary: #1565c0;
+            --bg: #f5f9ff;
+            --surface: #eaf1fb;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --border: #bbdefb;
+        }
+        .tema-verde {
+            --primary: #2e7d32;
+            --bg: #f7fff7;
+            --surface: #e8f5e9;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --border: #c8e6c9;
+        }
+        .tema-rosa {
+            --primary: #c2185b;
+            --bg: #fff7fa;
+            --surface: #fce4ec;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --border: #f8bbd0;
+        }
         * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif;}
-        body {
-            background: var(--bg); color: var(--text);
-            min-height: 100vh; transition: background 0.3s, color 0.3s;
-        }
+        body {background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.3s;}
 
-        /* ========== TELA INICIAL ========== */
+        /* ===== CONTROLES NO TOPO ===== */
+        .topo {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        .grupo-botoes {display: flex; gap: 6px; align-items: center;}
+        .btn-topo {
+            background: transparent; border: none; font-size: 1.1rem; padding: 6px 10px;
+            cursor: pointer; border-radius: 6px; color: var(--text);
+        }
+        .btn-topo.ativo {background: rgba(139,0,0,0.15); color: var(--primary);}
+        .fonte-valor {font-size: 0.85rem; min-width: 24px; text-align: center; color: var(--text-secondary);}
+
+        /* ===== SELETOR DE TEMA ===== */
+        .seletor-tema {
+            position: fixed; top: 60px; right: 16px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+            z-index: 101; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .seletor-tema.mostrar {display: block;}
+        .seletor-tema h4 {font-size: 0.9rem; margin-bottom: 10px; color: var(--text-secondary);}
+        .cores {display: flex; gap: 8px;}
+        .cor {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .cor.ativo {border-color: var(--text);}
+        .cor.claro {background: #fff;}
+        .cor.escuro {background: #333;}
+        .cor.azul {background: #1565c0;}
+        .cor.verde {background: #2e7d32;}
+        .cor.rosa {background: #c2185b;}
+
+        /* ===== TELA INICIAL ===== */
         .tela-inicial {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; min-height: 80vh; padding: 30px 20px;
-            transition: opacity 0.4s ease;
+            padding: 90px 20px 40px; max-width: 520px; margin: 0 auto;
         }
-        .tela-inicial.escondida {display: none;}
-        
-        .mensagem-boasvindas {
-            text-align: center; margin-bottom: 40px; max-width: 500px;
-        }
-        .mensagem-boasvindas h1 {
-            font-size: 1.6rem; color: var(--primary); margin-bottom: 12px;
-        }
-        .mensagem-boasvindas p {
-            font-size: 1rem; color: var(--text-secondary); line-height: 1.6;
-        }
+        .mensagem {text-align: center; margin-bottom: 30px;}
+        .mensagem h1 {font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; line-height: 1.4;}
+        .mensagem p {font-size: 1rem; color: var(--text-secondary); line-height: 1.6;}
 
-        .busca-central {
-            width: 100%; max-width: 500px;
+        /* ===== CAIXA DE BUSCA ===== */
+        .caixa-busca {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--surface); padding: 14px 18px;
+            border-radius: 16px; border: 2px solid var(--border);
+            margin-bottom: 12px; transition: border-color 0.2s;
         }
-        .busca-wrapper {
-            display: flex; gap: 10px; align-items: center;
-            background: var(--surface); padding: 12px 16px; border-radius: 16px;
-            border: 2px solid var(--border); transition: border-color 0.2s;
+        .caixa-busca.focada {border-color: var(--primary);}
+        .input-busca {
+            flex: 1; border: none; background: transparent; font-size: 1rem;
+            color: var(--text); outline: none;
         }
-        .busca-wrapper.focada {border-color: var(--primary);}
-        .busca-input {
-            flex: 1; padding: 10px 0; font-size: 1rem; border: none;
-            background: transparent; color: var(--text); outline: none;
+        .btn-mic {
+            width: 42px; height: 42px; border-radius: 50%; border: none;
+            background: var(--primary); color: white; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
         }
-        .mic-btn {
-            width: 44px; height: 44px; border-radius: 50%; border: none;
-            background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer;
-            flex-shrink: 0; transition: all 0.2s;
-        }
-        .mic-btn.gravando {background: #e74c3c; animation: pulsar 1s infinite;}
+        .btn-mic.gravando {background: #e53935; animation: pulsar 1s infinite;}
         @keyframes pulsar {
-            0% {box-shadow: 0 0 0 0 rgba(231,76,60,0.5);}
-            70% {box-shadow: 0 0 0 10px rgba(231,76,60,0);}
-            100% {box-shadow: 0 0 0 0 rgba(231,76,60,0);}
+            0% {box-shadow: 0 0 0 0 rgba(229,57,53,0.4);}
+            70% {box-shadow: 0 0 0 8px rgba(229,57,53,0);}
+            100% {box-shadow: 0 0 0 0 rgba(229,57,53,0);}
         }
-        .status-busca {
-            font-size: 0.85rem; color: var(--text-secondary); margin-top: 10px; text-align: center;
-            min-height: 24px;
-        }
+        .status {font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 20px;}
 
-        /* Resultados da busca */
-        .resultados-busca {
-            width: 100%; max-width: 500px; margin-top: 20px;
-            display: none;
-        }
-        .resultados-busca.mostrar {display: block;}
-        .resultados-titulo {
-            font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 10px; padding: 0 8px;
-        }
-        .hino-item {
+        /* ===== RESULTADOS ===== */
+        .resultados {display: none;}
+        .resultados.mostrar {display: block;}
+        .qtd-resultados {font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px; padding: 0 4px;}
+        .item-hino {
             padding: 14px 16px; background: var(--surface); border-radius: 10px;
             margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
             border-left: 3px solid transparent;
         }
-        .hino-item:hover {border-left-color: var(--primary); transform: translateX(4px);}
-        .hino-numero {font-weight: bold; color: var(--primary); font-size: 0.9rem;}
-        .hino-titulo {font-size: 1rem; margin-top: 2px;}
-        .hino-preview {
-            font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
+        .item-hino:hover {border-left-color: var(--primary); transform: translateX(4px);}
+        .hino-num {font-weight: bold; color: var(--primary); font-size: 0.9rem;}
+        .hino-nome {font-size: 1rem; margin: 2px 0 4px;}
+        .hino-trecho {font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
-        /* ========== TELA DO HINO — TELA CHEIA ========== */
+        /* ===== TELA CHEIA DO HINO ===== */
         .tela-hino {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg); z-index: 500;
+            background: var(--bg); z-index: 200; overflow-y: auto;
             transform: translateY(100%); transition: transform 0.3s ease;
-            overflow-y: auto; -webkit-overflow-scrolling: touch;
         }
-        .tela-hino.visivel {transform: translateY(0);}
+        .tela-hino.aberta {transform: translateY(0);}
         
-        .hino-conteudo {
-            padding: 40px 24px 80px; max-width: 600px; margin: 0 auto;
+        .cabecalho-hino {
+            position: sticky; top: 0; background: var(--bg);
+            padding: 16px 20px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .hino-cabecalho {
-            text-align: center; margin-bottom: 40px; padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
+        .btn-fechar {
+            font-size: 1.5rem; border: none; background: var(--surface);
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            color: var(--text);
         }
-        .hino-cabecalho .numero {
-            font-size: 1rem; color: var(--primary); font-weight: bold;
-        }
-        .hino-cabecalho .titulo {
-            font-size: 1.8rem; margin: 10px 0; line-height: 1.3;
-        }
-        .hino-letras {line-height: 2.4; text-align: center;}
-        .estrofe {margin-bottom: 35px; font-size: 18px;}
+        .info-hino {text-align: center; flex: 1;}
+        .num-hino {font-size: 0.9rem; color: var(--primary); font-weight: bold;}
+        .nome-hino {font-size: 1.3rem; margin-top: 4px;}
+        
+        .conteudo-hino {padding: 30px 24px 80px; max-width: 550px; margin: 0 auto;}
+        .estrofe {text-align: center; line-height: 2.2; margin-bottom: 32px; transition: font-size 0.2s;}
         .coro {font-style: italic; color: var(--primary); font-weight: 500;}
         
         .dica-toque {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: var(--surface); color: var(--text-secondary);
             padding: 8px 16px; border-radius: 20px; font-size: 0.8rem;
-            opacity: 0; transition: opacity 0.3s; z-index: 501;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            opacity: 0; transition: opacity 0.3s; z-index: 201;
         }
         .dica-toque.mostrar {opacity: 1;}
 
-        /* ========== CONTROLES GLOBAIS ========== */
-        .barra-controles {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 16px; background: var(--bg);
-            border-bottom: 1px solid var(--border);
-        }
-        .ctrl-btn {
-            background: transparent; border: none; color: var(--text);
-            font-size: 1.1rem; padding: 6px 10px; cursor: pointer;
-            border-radius: 6px; transition: background 0.2s;
-        }
-        .ctrl-btn:hover {background: rgba(139,0,0,0.1);}
-        .tamanho-fonte {display: flex; align-items: center; gap: 6px;}
-        .tamanho-fonte span {
-            font-size: 0.8rem; color: var(--text-secondary); min-width: 24px;
-            text-align: center;
-        }
-
-        /* ========== CARREGAR ARQUIVO ========== */
-        .caixa-carregar {
-            text-align: center; padding: 30px 20px;
-            border: 2px dashed var(--border); border-radius: 12px;
-            margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto;
-        }
-        .carregar-btn {
-            background: var(--primary); color: white; border: none; padding: 10px 20px;
-            border-radius: 8px; font-size: 0.95rem; cursor: pointer; margin-top: 10px;
-        }
-        .dica-carregar {
-            font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px;
-        }
-
-        /* ========== PROMPT DE INSTALAÇÃO ========== */
-        .install-prompt {
-            position: fixed; bottom: 20px; left: 16px; right: 16px;
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; padding: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 300; display: none;
-        }
-        .install-prompt.mostrar {display: block;}
-        .install-botoes {
-            display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end;
-        }
-        .install-btn {
-            background: var(--primary); color: white; border: none;
-            padding: 8px 16px; border-radius: 6px; cursor: pointer;
-        }
-        .fechar-btn {
-            background: transparent; color: var(--text-secondary); border: none;
-            padding: 8px 12px; cursor: pointer;
-        }
+        .carregando {text-align: center; padding: 40px; color: var(--text-secondary);}
     </style>
 </head>
 <body>
 
-<!-- Barra de Controles -->
-<div class="barra-controles" id="barraControles" style="display:none">
-    <div class="tamanho-fonte">
-        <button class="ctrl-btn" id="diminuirFonte">A-</button>
-        <span id="tamanhoValor">18</span>
-        <button class="ctrl-btn" id="aumentarFonte">A+</button>
+<!-- TOPO: Controles -->
+<div class="topo">
+    <div class="grupo-botoes">
+        <button class="btn-topo" id="btnMenos">A−</button>
+        <span class="fonte-valor" id="fonteValor">18</span>
+        <button class="btn-topo" id="btnMais">A+</button>
     </div>
-    <div>
-        <button class="ctrl-btn" id="botaoTema">🌙</button>
-        <button class="ctrl-btn" id="botaoTelaAcesa">💡</button>
-    </div>
-</div>
-
-<!-- Prompt de Instalação -->
-<div class="install-prompt" id="installPrompt">
-    <strong>🎵 Instalar Harpa Cristã?</strong>
-    <p style="font-size:0.9rem; margin-top:4px">Instale para usar como um aplicativo.</p>
-    <div class="install-botoes">
-        <button class="fechar-btn" id="agoraNao">Agora não</button>
-        <button class="install-btn" id="instalarApp">Instalar</button>
+    <div class="grupo-botoes">
+        <button class="btn-topo" id="btnTela" title="Tela sempre acesa">💡</button>
+        <button class="btn-topo" id="btnMudarTema" title="Mudar cor">🎨</button>
     </div>
 </div>
 
-<!-- TELA INICIAL -->
-<div class="tela-inicial" id="telaInicial">
-    <!-- Área de Carregar Arquivo -->
-    <div class="caixa-carregar" id="caixaCarregar">
-        <h3>📂 Carregar Hinos</h3>
-        <p style="font-size:0.9rem; color:var(--text-secondary); margin:8px 0">Selecione o arquivo hinos.txt</p>
-        <input type="file" id="arquivoHinos" accept=".txt" style="display:none">
-        <button class="carregar-btn" id="selecionarArquivo">📄 Escolher arquivo hinos.txt</button>
-        <p class="dica-carregar">Coloque o arquivo na mesma pasta que este programa.</p>
+<!-- Seletor de Tema -->
+<div class="seletor-tema" id="seletorTema">
+    <h4>Escolha a cor:</h4>
+    <div class="cores">
+        <div class="cor claro ativo" data-tema="" title="Claro"></div>
+        <div class="cor escuro" data-tema="escuro" title="Escuro"></div>
+        <div class="cor azul" data-tema="azul" title="Azul"></div>
+        <div class="cor verde" data-tema="verde" title="Verde"></div>
+        <div class="cor rosa" data-tema="rosa" title="Rosa"></div>
     </div>
+</div>
 
-    <div class="mensagem-boasvindas" id="mensagemBoasvindas" style="display:none">
+<!-- TELA PRINCIPAL -->
+<div class="tela-inicial">
+    <div class="mensagem">
         <h1>🎵 Olá! Qual hino nós iremos louvar agora?</h1>
-        <p>Digite o nome do hino, o número, ou aperte no microfone e fale/cante um pedaço para eu buscar para você.</p>
+        <p>Digite o número, o nome do hino, ou aperte no microfone e fale/cante um pedaço para eu buscar para você.</p>
     </div>
 
-    <div class="busca-central" id="caixaBusca" style="display:none">
-        <div class="busca-wrapper" id="caixaBuscaWrapper">
-            <input type="text" class="busca-input" id="campoBusca" placeholder="Nº, título ou trecho do hino...">
-            <button class="mic-btn" id="botaoMic" title="Falar para buscar">🎤</button>
-        </div>
-        <div class="status-busca" id="statusBusca">Clique e digite ou fale pelo microfone ↑</div>
+    <div class="caixa-busca" id="caixaBusca">
+        <input type="text" class="input-busca" id="inputBusca" placeholder="Nº, nome ou trecho do hino...">
+        <button class="btn-mic" id="btnMic" title="Falar para buscar">🎤</button>
     </div>
 
-    <div class="resultados-busca" id="resultadosBusca">
-        <div class="resultados-titulo">Hinos encontrados:</div>
-        <div id="listaResultados"></div>
+    <div class="status" id="status">Carregando hinos...</div>
+
+    <div class="resultados" id="resultados">
+        <div class="qtd-resultados" id="qtdResultados"></div>
+        <div id="listaHinos"></div>
     </div>
 </div>
 
-<!-- TELA DO HINO - TELA CHEIA -->
+<!-- TELA CHEIA DO HINO -->
 <div class="tela-hino" id="telaHino">
-    <div class="hino-conteudo" id="hinoConteudo">
-        <div class="hino-cabecalho">
-            <div class="numero" id="hinoNumero"></div>
-            <h2 class="titulo" id="hinoTitulo"></h2>
+    <div class="cabecalho-hino">
+        <button class="btn-fechar" id="btnFechar">←</button>
+        <div class="info-hino">
+            <div class="num-hino" id="numHino"></div>
+            <h2 class="nome-hino" id="nomeHino"></h2>
         </div>
-        <div class="hino-letras" id="hinoLetras"></div>
+        <div style="width:40px;"></div>
     </div>
+    <div class="conteudo-hino" id="conteudoHino"></div>
     <div class="dica-toque" id="dicaToque">👆 Toque duas vezes para voltar</div>
 </div>
 
 <script>
-// =====================================================
-// 📲 PWA — INSTALAÇÃO
-// =====================================================
-let promptInstalacao = null;
-const installPrompt = document.getElementById('installPrompt');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    promptInstalacao = e;
-    setTimeout(() => {
-        if (!localStorage.getItem('instalacaoRecusada')) {
-            installPrompt.classList.add('mostrar');
-        }
-    }, 3000);
-});
-
-document.getElementById('instalarApp').addEventListener('click', async () => {
-    if (promptInstalacao) {
-        promptInstalacao.prompt();
-        const { outcome } = await promptInstalacao.userChoice;
-        if (outcome === 'accepted') console.log('App instalado!');
-        installPrompt.classList.remove('mostrar');
-    }
-});
-
-document.getElementById('agoraNao').addEventListener('click', () => {
-    installPrompt.classList.remove('mostrar');
-    localStorage.setItem('instalacaoRecusada', 'sim');
-});
-
-// =====================================================
-// 💡 TELA SEMPRE ACESA
-// =====================================================
-let bloqueiaTela = null;
-let telaAcimaAtiva = false;
-
-async function manterTelaAcima(ativar) {
-    try {
-        if (ativar && 'wakeLock' in navigator) {
-            bloqueiaTela = await navigator.wakeLock.request('screen');
-            telaAcimaAtiva = true;
-            botaoTelaAcesa.style.opacity = '1';
-            botaoTelaAcesa.style.color = 'var(--primary)';
-        } else if (bloqueiaTela) {
-            await bloqueiaTela.release();
-            telaAcimaAtiva = false;
-            botaoTelaAcesa.style.opacity = '0.6';
-            botaoTelaAcesa.style.color = 'inherit';
-        }
-    } catch (err) {console.log('Wake Lock error:', err);}
-}
-
-document.getElementById('botaoTelaAcesa').addEventListener('click', () => {
-    manterTelaAcima(!telaAcimaAtiva);
-});
-
-// =====================================================
-// 🌙 TEMA ESCURO/CLARO
-// =====================================================
-let temaEscuro = localStorage.getItem('temaEscuro') === 'sim';
-
-function aplicarTema() {
-    if (temaEscuro) {
-        document.body.classList.add('tema-escuro');
-        document.getElementById('botaoTema').textContent = '☀️';
-    } else {
-        document.body.classList.remove('tema-escuro');
-        document.getElementById('botaoTema').textContent = '🌙';
-    }
-}
-aplicarTema();
-
-document.getElementById('botaoTema').addEventListener('click', () => {
-    temaEscuro = !temaEscuro;
-    localStorage.setItem('temaEscuro', temaEscuro ? 'sim' : 'nao');
-    aplicarTema();
-});
-
-// =====================================================
-// 🔤 TAMANHO DA FONTE
-// =====================================================
-let tamanhoFonte = parseInt(localStorage.getItem('tamanhoFonte') || '18');
-
-function atualizarTamanho() {
-    document.getElementById('tamanhoValor').textContent = tamanhoFonte;
-    document.querySelectorAll('.estrofe').forEach(el => {
-        el.style.fontSize = tamanhoFonte + 'px';
-    });
-}
-
-});
-
-document.getElementById('aumentarFonte').addEventListener('click', () => {
-    if (tamanhoFonte < 28) {
-        tamanhoFonte += 2;
-        localStorage.setItem('tamanhoFonte', tamanhoFonte);
-        atualizarTamanho();
-    }
-});
-
-// =====================================================
-// 📂 CARREGAR HINOS DO ARQUIVO TXT
-// =====================================================
+// ===== VARIÁVEIS =====
 let hinos = [];
-let hinoAtualIndex = -1;
+let tamanhoFonte = 18;
+let ultimoToque = 0;
+let telaAcesa = false;
+let bloqueioTela = null;
 
-document.getElementById('selecionarArquivo').addEventListener('click', () => {
-    document.getElementById('arquivoHinos').click();
-});
-
-document.getElementById('arquivoHinos').addEventListener('change', function(e) {
-    const arquivo = e.target.files[0];
-    if (!arquivo) return;
-    
-    const leitor = new FileReader();
-    leitor.onload = function(event) {
-        const conteudo = event.target.result;
-        hinos = parseHinos(conteudo);
-        
-        if (hinos.length > 0) {
-            document.getElementById('caixaCarregar').style.display = 'none';
-            document.getElementById('mensagemBoasvindas').style.display = 'block';
-            document.getElementById('caixaBusca').style.display = 'block';
-            document.getElementById('barraControles').style.display = 'flex';
-            document.getElementById('statusBusca').textContent = `✅ ${hinos.length} hinos carregados! Digite ou fale para buscar.`;
-        } else {
-            document.getElementById('statusBusca').textContent = '❌ Nenhum hino encontrado. Verifique o arquivo.';
-        }
-    };
-    leitor.readAsText(arquivo, 'UTF-8');
-});
+// ===== CARREGAR HINOS DO ARQUIVO =====
+async function carregarHinos() {
+    try {
+        const resposta = await fetch('hinos.txt');
+        if (!resposta.ok) throw new Error('Arquivo não encontrado');
+        const texto = await resposta.text();
+        hinos = parseHinos(texto);
+        document.getElementById('status').textContent = 
+            hinos.length > 0 ? `✅ ${hinos.length} hinos prontos! Digite ou fale acima.` : 'Nenhum hino encontrado.';
+    } catch (erro) {
+        document.getElementById('status').innerHTML = 
+            '❌ Não foi possível carregar os hinos.<br>Verifique se o arquivo <b>hinos.txt</b> está na mesma pasta que este programa.';
+    }
+}
 
 function parseHinos(texto) {
     const lista = [];
@@ -403,159 +264,143 @@ function parseHinos(texto) {
         const linhas = bloco.split('\n').filter(l => l.trim());
         if (linhas.length < 2) return;
         
-        const primeiraLinha = linhas[0].trim();
-        const matchNumero = primeiraLinha.match(/^(\d+)\.\s*(.+)$/);
+        const primeira = linhas[0].trim();
+        const match = primeira.match(/^(\d+)\.\s*(.+)$/);
+        if (!match) return;
         
-        if (matchNumero) {
-            const numero = parseInt(matchNumero[1]);
-            const titulo = matchNumero[2].trim();
-            const estrofes = [];
-            let estrofeAtual = [];
-            
-            for (let i = 1; i < linhas.length; i++) {
-                const linha = linhas[i].trim();
-                if (linha === '---' || linha === '___') {
-                    if (estrofeAtual.length) {
-                        estrofes.push({ linhas: [...estrofeAtual], coro: false });
-                        estrofeAtual = [];
-                    }
-                } else if (linha.startsWith('♪') || linha.startsWith('CORO:')) {
-                    if (estrofeAtual.length) {
-                        estrofes.push({ linhas: [...estrofeAtual], coro: false });
-                        estrofeAtual = [];
-                    }
-                    estrofeAtual.push(linha.replace(/^(♪|CORO:)\s*/, ''));
-                    estrofes.push({ linhas: [...estrofeAtual], coro: true });
-                    estrofeAtual = [];
-                } else {
-                    estrofeAtual.push(linha);
-                }
+        const numero = parseInt(match[1]);
+        const titulo = match[2].trim();
+        const estrofes = [];
+        let atual = [];
+        
+        for (let i = 1; i < linhas.length; i++) {
+            const l = linhas[i].trim();
+            if (l === '---') {
+                if (atual.length) estrofes.push({linhas: [...atual], coro: false});
+                atual = [];
+            } else if (l.startsWith('♪') || l.startsWith('CORO:')) {
+                if (atual.length) estrofes.push({linhas: [...atual], coro: false});
+                atual = [];
+                atual.push(l.replace(/^(♪|CORO:)\s*/, ''));
+                estrofes.push({linhas: [...atual], coro: true});
+                atual = [];
+            } else {
+                atual.push(l);
             }
-            if (estrofeAtual.length) {
-                estrofes.push({ linhas: estrofeAtual, coro: false });
-            }
-            
-            const textoCompleto = estrofes.map(e => e.linhas.join(' ')).join(' ');
-            lista.push({ numero, titulo, estrofes, textoCompleto });
         }
+        if (atual.length) estrofes.push({linhas: atual, coro: false});
+        
+        const textoCompleto = estrofes.map(e => e.linhas.join(' ')).join(' ');
+        lista.push({numero, titulo, estrofes, textoCompleto});
     });
-    
     return lista;
 }
 
-// =====================================================
-// 🔍 BUSCA
-// =====================================================
-const campoBusca = document.getElementById('campoBusca');
-const resultadosBusca = document.getElementById('resultadosBusca');
-const listaResultados = document.getElementById('listaResultados');
-const statusBusca = document.getElementById('statusBusca');
-const caixaBuscaWrapper = document.getElementById('caixaBuscaWrapper');
+// ===== BUSCA =====
+const inputBusca = document.getElementById('inputBusca');
+const resultados = document.getElementById('resultados');
+const listaHinos = document.getElementById('listaHinos');
+const qtdResultados = document.getElementById('qtdResultados');
 
-campoBusca.addEventListener('input', function() {
-    const termo = this.value.trim().toLowerCase();
-    buscarHinos(termo);
+inputBusca.addEventListener('input', function() {
+    buscar(this.value.trim());
 });
 
-campoBusca.addEventListener('focus', () => caixaBuscaWrapper.classList.add('focada'));
-campoBusca.addEventListener('blur', () => caixaBuscaWrapper.classList.remove('focada'));
+inputBusca.addEventListener('focus', () => {
+    document.getElementById('caixaBusca').classList.add('focada');
+});
+inputBusca.addEventListener('blur', () => {
+    document.getElementById('caixaBusca').classList.remove('focada');
+});
 
-function buscarHinos(termo) {
+function buscar(termo) {
     if (!termo || hinos.length === 0) {
-        resultadosBusca.classList.remove('mostrar');
-        listaResultados.innerHTML = '';
+        resultados.classList.remove('mostrar');
         return;
     }
     
     let encontrados = [];
-    
     if (/^\d+$/.test(termo)) {
-        const numero = parseInt(termo);
-        encontrados = hinos.filter(h => h.numero === numero);
+        const n = parseInt(termo);
+        encontrados = hinos.filter(h => h.numero === n);
     }
-    
     if (encontrados.length === 0) {
-        encontrados = hinos.filter(h => {
-            return h.titulo.toLowerCase().includes(termo) ||
-                   h.textoCompleto.toLowerCase().includes(termo);
-        }).slice(0, 15);
+        encontrados = hinos.filter(h =>
+            h.titulo.toLowerCase().includes(termo.toLowerCase()) ||
+            h.textoCompleto.toLowerCase().includes(termo.toLowerCase())
+        ).slice(0, 12);
     }
     
-    if (encontrados.length > 0) {
-        statusBusca.textContent = `${encontrados.length} hino(s) encontrado(s)`;
-        resultadosBusca.classList.add('mostrar');
-        listaResultados.innerHTML = encontrados.map((hino, idx) => `
-            <div class="hino-item" data-index="${hinos.indexOf(hino)}">
-                <div class="hino-numero">${hino.numero}.</div>
-                <div class="hino-titulo">${hino.titulo}</div>
-                <div class="hino-preview">${hino.textoCompleto.substring(0, 60)}...</div>
-            </div>
-        `).join('');
+    if (encontrados.length) {
+        qtdResultados.textContent = `${encontrados.length} hino(s) encontrado(s):`;
+        listaHinos.innerHTML = encontrados.map(h => {
+            const idx = hinos.indexOf(h);
+            return `
+                <div class="item-hino" data-index="${idx}">
+                    <div class="hino-num">${h.numero}.</div>
+                    <div class="hino-nome">${h.titulo}</div>
+                    <div class="hino-trecho">${h.textoCompleto.substring(0, 55)}...</div>
+                </div>
+            `;
+        }).join('');
+        resultados.classList.add('mostrar');
     } else {
-        statusBusca.textContent = 'Nenhum hino encontrado';
-        resultadosBusca.classList.add('mostrar');
-        listaResultados.innerHTML = '<div class="vazio">Tente outro número, título ou trecho</div>';
+        qtdResultados.textContent = 'Nenhum hino encontrado. Tente outro.';
+        listaHinos.innerHTML = '';
+        resultados.classList.add('mostrar');
     }
 }
 
-// =====================================================
-// 🎤 BUSCA POR VOZ
-// =====================================================
-const botaoMic = document.getElementById('botaoMic');
-let reconhecimentoVoz = null;
+// ===== BUSCA POR VOZ =====
+const btnMic = document.getElementById('btnMic');
+let reconhecimento = null;
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    reconhecimentoVoz = new SpeechRecognition();
-    reconhecimentoVoz.lang = 'pt-BR';
-    reconhecimentoVoz.continuous = false;
-    reconhecimentoVoz.interimResults = true;
+    reconhecimento = new SpeechRecognition();
+    reconhecimento.lang = 'pt-BR';
+    reconhecimento.continuous = false;
+    reconhecimento.interimResults = true;
     
-    reconhecimentoVoz.onstart = function() {
-        botaoMic.classList.add('gravando');
-        statusBusca.textContent = '🎤 Ouvindo... fale ou cante agora!';
+    reconhecimento.onstart = () => {
+        btnMic.classList.add('gravando');
+        document.getElementById('status').textContent = '🎤 Ouvindo... fale agora!';
     };
     
-    reconhecimentoVoz.onresult = function(event) {
-        const transcript = Array.from(event.results)
-            .map(r => r[0].transcript)
-            .join('');
-        campoBusca.value = transcript;
-        if (event.results[0].isFinal) {
-            statusBusca.textContent = `Ouvido: "${transcript}" — buscando...`;
-            buscarHinos(transcript);
+    reconhecimento.onresult = (e) => {
+        const texto = Array.from(e.results).map(r => r[0].transcript).join('');
+        inputBusca.value = texto;
+        buscar(texto);
+    };
+    reconhecimento.onend = () => {
+        btnMic.classList.remove('gravando');
+        document.getElementById('status').textContent = '✅ Pronto! Digite ou fale outro.';
+    };
+    
+    reconhecimento.onerror = (e) => {
+        btnMic.classList.remove('gravando');
+        if (e.error !== 'no-speech') {
+            document.getElementById('status').textContent = 'Erro: ' + e.error;
         }
     };
-    
-    reconhecimentoVoz.onend = function() {
-        botaoMic.classList.remove('gravando');
-    };
-    
-    reconhecimentoVoz.onerror = function(e) {
-        botaoMic.classList.remove('gravando');
-        if (e.error !== 'no-speech') statusBusca.textContent = 'Erro: ' + e.error;
-    };
 } else {
-    botaoMic.style.display = 'none';
-    statusBusca.textContent = 'Seu navegador não suporta busca por voz. Use Chrome ou Edge.';
+    btnMic.style.display = 'none';
+    document.getElementById('status').textContent = 'Busca por voz não disponível. Digite para buscar.';
 }
 
-botaoMic.addEventListener('click', function() {
-    if (reconhecimentoVoz) {
-        try { reconhecimentoVoz.start(); } catch(e) {}
+btnMic.addEventListener('click', () => {
+    if (reconhecimento) {
+        try { reconhecimento.start(); } catch(e) {}
     }
 });
 
-// =====================================================
-// 📖 ABRIR HINO — TELA CHEIA
-// =====================================================
+// ===== ABRIR HINO NA TELA CHEIA =====
 const telaHino = document.getElementById('telaHino');
-const telaInicial = document.getElementById('telaInicial');
+const conteudoHino = document.getElementById('conteudoHino');
 const dicaToque = document.getElementById('dicaToque');
-let ultimoToque = 0;
 
 document.addEventListener('click', function(e) {
-    const item = e.target.closest('.hino-item');
+    const item = e.target.closest('.item-hino');
     if (item) {
         const index = parseInt(item.dataset.index);
         abrirHino(index);
@@ -563,29 +408,26 @@ document.addEventListener('click', function(e) {
 });
 
 function abrirHino(index) {
-    hinoAtualIndex = index;
     const hino = hinos[index];
     if (!hino) return;
     
-    document.getElementById('hinoNumero').textContent = `Hino ${hino.numero}`;
-    document.getElementById('hinoTitulo').textContent = hino.titulo;
+    document.getElementById('numHino').textContent = `Hino ${hino.numero}`;
+    document.getElementById('nomeHino').textContent = hino.titulo;
     
-    document.getElementById('hinoLetras').innerHTML = hino.estrofes.map((est, i) => {
-        const classe = est.coro ? 'coro' : '';
-        return `<div class="estrofe ${classe}" style="font-size: ${tamanhoFonte}px;">${est.linhas.join('<br>')}</div>`;
+    conteudoHino.innerHTML = hino.estrofes.map(est => {
+        return `<div class="estrofe ${est.coro ? 'coro' : ''}" style="font-size:${tamanhoFonte}px">${est.linhas.join('<br>')}</div>`;
     }).join('');
     
-    telaHino.classList.add('visivel');
+    telaHino.classList.add('aberta');
+    conteudoHino.scrollTop = 0;
     
     setTimeout(() => {
         dicaToque.classList.add('mostrar');
         setTimeout(() => dicaToque.classList.remove('mostrar'), 3000);
-    }, 800);
-    
-    document.getElementById('hinoConteudo').scrollTop = 0;
+    }, 600);
 }
 
-// Toque duplo para voltar da tela do hino
+// ===== FECHAR HINO — Toque duplo =====
 telaHino.addEventListener('click', function() {
     const agora = Date.now();
     if (agora - ultimoToque < 300) {
@@ -594,22 +436,102 @@ telaHino.addEventListener('click', function() {
     ultimoToque = agora;
 });
 
+document.getElementById('btnFechar').addEventListener('click', fecharHino);
+
 function fecharHino() {
-    telaHino.classList.remove('visivel');
-    hinoAtualIndex = -1;
+    telaHino.classList.remove('aberta');
+    conteudoHino.scrollTop = 0;
 }
 
-// =====================================================
-// 🔄 ATUALIZA TAMANHO QUANDO REABRE HINO
-// =====================================================
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mut) => {
-        if (mut.target.classList.contains('visivel')) {
-            atualizarTamanho();
-        }
+// ===== TAMANHO DA FONTE =====
+const btnMais = document.getElementById('btnMais');
+const btnMenos = document.getElementById('btnMenos');
+const fonteValor = document.getElementById('fonteValor');
+
+function atualizarFonte() {
+    fonteValor.textContent = tamanhoFonte;
+    document.querySelectorAll('.estrofe').forEach(el => {
+        el.style.fontSize = tamanhoFonte + 'px';
+    });
+    localStorage.setItem('tamanhoFonte', tamanhoFonte);
+}
+
+btnMais.addEventListener('click', () => {
+    if (tamanhoFonte < 28) {
+        tamanhoFonte += 2;
+        atualizarFonte();
+    }
+});
+
+btnMenos.addEventListener('click', () => {
+    if (tamanhoFonte > 14) {
+        tamanhoFonte -= 2;
+        atualizarFonte();
+    }
+});
+
+tamanhoFonte = parseInt(localStorage.getItem('tamanhoFonte') || '18');
+atualizarFonte();
+
+// ===== TEMA =====
+const seletorTema = document.getElementById('seletorTema');
+const btnMudarTema = document.getElementById('btnMudarTema');
+const botoesCor = document.querySelectorAll('.cor');
+
+btnMudarTema.addEventListener('click', () => {
+    seletorTema.classList.toggle('mostrar');
+});
+
+botoesCor.forEach(botao => {
+    botao.addEventListener('click', () => {
+        botoesCor.forEach(b => b.classList.remove('ativo'));
+        botao.classList.add('ativo');
+        
+        const tema = botao.dataset.tema;
+        document.body.classList.remove('tema-escuro', 'tema-azul', 'tema-verde', 'tema-rosa');
+        if (tema) document.body.classList.add('tema-' + tema);
+        localStorage.setItem('tema', tema);
+        seletorTema.classList.remove('mostrar');
     });
 });
-observer.observe(telaHino, { attributes: true, attributeFilter: ['class'] });
+
+const temaSalvo = localStorage.getItem('tema') || '';
+if (temaSalvo) {
+    document.body.classList.add('tema-' + temaSalvo);
+    botoesCor.forEach(b => {
+        b.classList.toggle('ativo', b.dataset.tema === temaSalvo);
+    });
+}
+
+// ===== TELA SEMPRE ACESA =====
+const btnTela = document.getElementById('btnTela');
+
+async function manterTela(ligado) {
+    try {
+        if (ligado && 'wakeLock' in navigator) {
+            bloqueioTela = await navigator.wakeLock.request('screen');
+            btnTela.classList.add('ativo');
+            telaAcesa = true;
+        } else if (bloqueioTela) {
+            await bloqueioTela.release();
+            btnTela.classList.remove('ativo');
+            telaAcesa = false;
+        }
+    } catch (err) { console.log('Wake Lock:', err); }
+}
+
+btnTela.addEventListener('click', () => {
+    manterTela(!telaAcesa);
+});
+
+document.addEventListener('visibilitychange', async () => {
+    if (telaAcesa && bloqueioTela && document.visibilityState === 'visible') {
+        try { bloqueioTela = await navigator.wakeLock.request('screen'); } catch(e) {}
+    }
+});
+
+// ===== INICIAR =====
+carregarHinos();
 
 </script>
 
