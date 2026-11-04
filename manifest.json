@@ -3,21 +3,22 @@
   "short_name": "Harpa",
   "description": "Hinos da Harpa Cristã com busca por voz e letra",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#fefdfb",
   "theme_color": "#8b4513",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%238b4513' rx='32'/%3E%3Ctext x='96' y='120' font-size='80' fill='white' text-anchor='middle' font-family='Arial, sans-serif'%3E🎵%3C/text%3E%3C/svg%3E",
+      "src": "https://cdn-icons-png.flaticon.com/512/1010/1010573.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%238b4513' rx='80'/%3E%3Ctext x='256' y='320' font-size='200' fill='white' text-anchor='middle' font-family='Arial, sans-serif'%3E🎵%3C/text%3E%3C/svg%3E",
+      "src": "https://cdn-icons-png.flaticon.com/512/1010/1010573.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
