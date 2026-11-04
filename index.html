@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#8b4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Harpa">
+    <link rel="manifest" href="manifest.json">
+    <meta name="description" content="Harpa Cristã — hinos com busca por voz e letra">
+    <title>🎵 Harpa Cristã</title>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%238b4513' rx='28'/%3E%3Ctext x='90' y='112' font-size='75' fill='white' text-anchor='middle' font-family='Arial, sans-serif'%3E🎵%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --primary: #8b4513;
+            --bg: #fefdfb;
+            --surface: #f9f6f0;
+            --text: #2c2416;
+            --text-secondary: #6b5d4d;
+            --border: #d9c7b0;
+            --paper: rgba(248, 240, 220, 0.4);
+            --coro: #5c3a21;
+        }
+        .tema-escuro {
+            --primary: #d4a574;
+            --bg: #1e1a15;
+            --surface: #2a251e;
+            --text: #e8ded0;
+            --text-secondary: #a89884;
+            --border: #4a4035;
+            --paper: rgba(45, 39, 29, 0.5);
+            --coro: #e0c49f;
+        }
+        .tema-azul {
+            --primary: #1565c0;
+            --bg: #f0f4f8;
+            --surface: #e6edf5;
+            --text: #1a2430;
+            --text-secondary: #546e7a;
+            --border: #b9d1e3;
+            --paper: rgba(234, 242, 249, 0.5);
+            --coro: #0d47a1;
+        }
+        .tema-verde {
+            --primary: #2e7d32;
+            --bg: #f3f8f3;
+            --surface: #e8f0e8;
+            --text: #1d2b1d;
+            --text-secondary: #5e6d5e;
+            --border: #b8d0b8;
+            --paper: rgba(237, 244, 237, 0.5);
+            --coro: #1b5e20;
+        }
+        .tema-rosa {
+            --primary: #ad1457;
+            --bg: #fbf4f8;
+            --surface: #f7e8ef;
+            --text: #2c1a24;
+            --text-secondary: #7a5d6d;
+            --border: #e8c5d8;
+            --paper: rgba(252, 240, 247, 0.5);
+            --coro: #880e4f;
+        }
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Georgia, serif;}
+        html, body {height: 100%;}
+        body {background: var(--bg); color: var(--text); transition: background 0.3s;}
+
+        /* ===== TOPO FIXO ===== */
+        .topo-fixo {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: var(--bg); padding: 10px 16px 14px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .barra-controles {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+        }
+        .grupo-botoes {display: flex; gap: 6px; align-items: center;}
+        .btn-topo {
+            background: transparent; border: none; font-size: 1rem; padding: 6px 8px;
+            cursor: pointer; border-radius: 6px; color: var(--text);
+        }
+        .btn-topo.ativo {background: rgba(139,69,19,0.12); color: var(--primary);}
+        .fonte-valor {font-size: 0.8rem; min-width: 22px; text-align: center; color: var(--text-secondary);}
+
+        /* ===== SELETOR DE TEMA ===== */
+        .seletor-tema {
+            position: fixed; top: 70px; right: 16px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+            z-index: 101; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .seletor-tema.mostrar {display: block;}
+        .seletor-tema h4 {font-size: 0.85rem; margin-bottom: 10px; color: var(--text-secondary);}
+        .cores {display: flex; gap: 8px;}
+        .cor {
+            width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .cor.ativo {border-color: var(--text);}
+        .cor.claro {background: linear-gradient(135deg, #f8f0dc, #e8d8b8);}
+        .cor.escuro {background: linear-gradient(135deg, #4a4035, #2a251e);}
+        .cor.azul {background: linear-gradient(135deg, #4a90e2, #1565c0);}
+        .cor.verde {background: linear-gradient(135deg, #66bb6a, #2e7d32);}
+        .cor.rosa {background: linear-gradient(135deg, #f06292, #c2185b);}
+
+        /* ===== CONTEÚDO PRINCIPAL — ROLA LIVRE ===== */
+        .conteudo {padding-top: 155px; padding-bottom: 30px; padding-left: 16px; padding-right: 16px; max-width: 580px; margin: 0 auto;}
+
+        .mensagem {text-align: center; margin-bottom: 20px;}
+        .mensagem h1 {
+            font-size: 1.35rem; color: var(--primary); margin-bottom: 6px; line-height: 1.4;
+            font-family: Georgia, serif;
+        }
+        .mensagem p {font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;}
+
+        /* ===== CAIXA DE BUSCA ===== */
+        .caixa-busca {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--surface); padding: 12px 16px;
+            border-radius: 14px; border: 2px solid var(--border);
+            margin-bottom: 14px; transition: border-color 0.2s;
+        }
+        .caixa-busca.focada {border-color: var(--primary);}
+        .input-busca {
+            flex: 1; border: none; background: transparent; font-size: 0.98rem;
+            color: var(--text); outline: none;
+        }
+        .btn-mic {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--primary); color: white; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+        }
+        .btn-mic.gravando {background: #c0392b; animation: pulsar 1s infinite;}
+        @keyframes pulsar {
+            0% {box-shadow: 0 0 0 0 rgba(192,57,43,0.4);}
+            70% {box-shadow: 0 0 0 8px rgba(192,57,43,0);}
+            100% {box-shadow: 0 0 0 0 rgba(192,57,43,0);}
+        }
+        .status {font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 16px;}
+
+        /* ===== LISTA DE HINOS — TODOS APARECEM AQUI ===== */
+        .lista-hinos {display: flex; flex-direction: column; gap: 6px;}
+        .item-hino {
+            padding: 12px 16px; background: var(--surface); border-radius: 10px;
+            cursor: pointer; transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .item-hino:hover, .item-hino.ativo {border-left-color: var(--primary); background: var(--paper); transform: translateX(2px);}
+        .hino-num {font-weight: bold; color: var(--primary); font-size: 0.9rem;}
+        .hino-nome {font-size: 1rem; margin: 2px 0 3px;}
+        .hino-trecho {font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+        /* ===== HINO ABERTO — FUNDO FOLHA SUAVE SEM BORDA ===== */
+        .hino-aberto {
+            display: none; margin-top: 24px;
+            background: var(--paper);
+            border-radius: 8px;
+            padding: 30px 24px 34px;
+            position: relative;
+        }
+        .hino-aberto.mostrar {display: block;}
+        
+        .hino-cabecalho {text-align: center; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border);}
+        .hino-cabecalho .numero {font-size: 0.85rem; color: var(--primary); font-weight: bold; letter-spacing: 1px;}
+        .hino-cabecalho .titulo {
+            font-size: 1.3rem; margin-top: 6px; font-family: Georgia, serif;
+            color: var(--primary); font-weight: 600;
+        }
+        .hino-cabecalho .abrir-tela {
+            margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);
+            cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; border-radius: 4px; transition: background 0.2s;
+        }
+        .hino-cabecalho .abrir-tela:hover {background: rgba(139,69,19,0.06);}
+
+        .estrofe {
+            text-align: center; line-height: 26px; margin-bottom: 24px;
+            font-size: 1rem; transition: font-size 0.2s;
+        }
+        .coro {
+            font-weight: 600; color: var(--coro);
+            padding: 6px 12px; margin: 10px 0;
+            background: rgba(139,69,19,0.04);
+            border-radius: 4px;
+        }
+
+        /* ===== TELA CHEIA — SEM FAIXA BRANCA NO TOPO ===== */
+        .tela-cheia {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg); z-index: 200; overflow-y: auto;
+            transform: translateY(100%); transition: transform 0.3s ease;
+        }
+        .tela-cheia.aberta {transform: translateY(0);}
+        
+        .tela-cheia .cabecalho {
+            position: sticky; top: 0;
+            padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(254, 253, 251, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .tema-escuro .tela-cheia .cabecalho {background: rgba(30, 26, 21, 0.85);}
+        .tela-cheia .btn-fechar {
+            font-size: 1.4rem; border: none; background: var(--surface);
+            width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+            color: var(--text); display: flex; align-items: center; justify-content: center;
+        }
+        .tela-cheia .fonte-controles {display: flex; gap: 6px; align-items: center;}
+        .tela-cheia .fonte-btn {
+            background: var(--surface); border: none; width: 34px; height: 34px;
+            border-radius: 50%; cursor: pointer; color: var(--text); font-size: 0.85rem;
+        }
+
+        .tela-cheia .conteudo-papel {
+            max-width: 520px; margin: 0 auto; padding: 30px 24px 80px;
+            background: var(--paper);
+            min-height: 100vh;
+        }
+        .tela-cheia .hino-cabecalho {border-bottom-width: 1px; padding-bottom: 20px; margin-bottom: 30px;}
+        .tela-cheia .estrofe {line-height: 30px; margin-bottom: 30px; font-size: 1.05rem;}
+        .tela-cheia .coro {padding: 10px 20px; margin: 14px 0;}
+    </style>
+</head>
+<body>
+
+<!-- TOPO FIXO -->
+<div class="topo-fixo">
+    <div class="barra-controles">
+        <div class="grupo-botoes">
+            <button class="btn-topo" id="btnMenos">A−</button>
+            <span class="fonte-valor" id="fonteValor">18</span>
+            <button class="btn-topo" id="btnMais">A+</button>
+        </div>
+        <div class="grupo-botoes">
+            <button class="btn-topo" id="btnTela" title="Tela sempre acesa">💡</button>
+            <button class="btn-topo" id="btnMudarTema" title="Mudar cor">🎨</button>
+        </div>
+    </div>
+
+    <!-- Seletor de Tema -->
+    <div class="seletor-tema" id="seletorTema">
+        <h4>Escolha a cor:</h4>
+        <div class="cores">
+            <div class="cor claro ativo" data-tema="" title="Claro"></div>
+            <div class="cor escuro" data-tema="escuro" title="Escuro"></div>
+            <div class="cor azul" data-tema="azul" title="Azul"></div>
+            <div class="cor verde" data-tema="verde" title="Verde"></div>
+            <div class="cor rosa" data-tema="rosa" title="Rosa"></div>
+        </div>
+    </div>
+
+    <!-- Busca -->
+    <div class="caixa-busca" id="caixaBusca">
+        <input type="text" class="input-busca" id="inputBusca" placeholder="Nº, nome ou trecho do hino...">
+        <button class="btn-mic" id="btnMic" title="Falar para buscar">🎤</button>
+    </div>
+
+    <div class="status" id="status">Carregando hinos...</div>
+</div>
+
+<!-- CONTEÚDO — ROLA LIVREMENTE -->
+<div class="conteudo">
+    <div class="mensagem">
+        <h1>🎵 Olá! Qual hino nós iremos louvar agora?</h1>
+        <p>Digite ou fale um trecho acima, ou navegue pela lista abaixo.</p>
+    </div>
+
+    <!-- LISTA DE TODOS OS HINOS -->
+    <div class="lista-hinos" id="listaHinos">
+        <!-- Hinos aparecem aqui -->
+    </div>
+
+    <!-- HINO ABERTO ABAIXO DA LISTA -->
+    <div class="hino-aberto" id="hinoAberto">
+        <div class="hino-cabecalho">
+            <div class="numero" id="hinoAbertoNumero"></div>
+            <h2 class="titulo" id="hinoAbertoTitulo"></h2>
+            <div class="abrir-tela" id="btnAbrirTela">⛶ Abrir em tela cheia</div>
+        </div>
+        <div id="hinoAbertoLetras"></div>
+    </div>
+</div>
+
+<!-- TELA CHEIA DO HINO -->
+<div class="tela-cheia" id="telaCheia">
+    <div class="cabecalho">
+        <button class="btn-fechar" id="btnFechar">←</button>
+        <div class="fonte-controles">
+            <button class="fonte-btn" id="btnMenosTela">A−</button>
+            <span id="fonteValorTela">20</span>
+            <button class="fonte-btn" id="btnMaisTela">A+</button>
+        </div>
+    </div>
+    <div class="conteudo-papel" id="papelTelaCheia"></div>
+</div>
+
+<script>
+// ===== VARIÁVEIS =====
+let hinos = [];
+let hinoAtual = null;
+let tamanhoFonte = 18;
+let tamanhoFonteTela = 20;
+let todosOsHinos = [];
+let telaAcesa = false;
+let bloqueioTela = null;
+
+// ===== CARREGAR HINOS =====
+async function carregarHinos() {
+    try {
+        const resposta = await fetch('hinos.txt');
+        if (!resposta.ok) throw new Error('Não encontrado');
+        const texto = await resposta.text();
+        hinos = parseHinos(texto);
+        todosOsHinos = [...hinos];
+        mostrarTodosHinos();
+        document.getElementById('status').textContent = 
+            hinos.length > 0 ? `✅ ${hinos.length} hinos prontos!` : 'Nenhum hino encontrado.';
+    } catch (erro) {
+        document.getElementById('status').innerHTML = 
+            '❌ Não foi possível carregar os hinos.<br>Verifique se o arquivo <b>hinos.txt</b> está na mesma pasta.';
+    }
+}
+
+function parseHinos(texto) {
+    const lista = [];
+    const blocos = texto.split(/(?=^\d+\.\s)/m);
+    
+    blocos.forEach(bloco => {
+        bloco = bloco.trim();
+        if (!bloco) return;
+        
+        const linhas = bloco.split('\n').filter(l => l.trim());
+        if (linhas.length < 2) return;
+        
+        const primeira = linhas[0].trim();
+        const match = primeira.match(/^(\d+)\.\s*(.+)$/);
+        if (!match) return;
+        
+        const numero = parseInt(match[1]);
+        const titulo = match[2].trim();
+        const estrofes = [];
+        let atual = [];
+        
+        for (let i = 1; i < linhas.length; i++) {
+            const l = linhas[i].trim();
+            if (l === '---') {
+                if (atual.length) {
+                    estrofes.push({linhas: [...atual], coro: false});
+                }
+                atual = [];
+            } else if (l.startsWith('♪') || l.startsWith('CORO:')) {
+                if (atual.length) {
+                    estrofes.push({linhas: [...atual], coro: false});
+                }
+                atual = [];
+                atual.push(l.replace(/^(♪|CORO:)\s*/, ''));
+                estrofes.push({linhas: [...atual], coro: true});
+                atual = [];
+            } else {
+                atual.push(l);
+            }
+        }
+        if (atual.length) {
+            estrofes.push({linhas: atual, coro: false});
+        }
+        
+        const textoCompleto = estrofes.map(e => e.linhas.join(' ')).join(' ');
+        lista.push({numero, titulo, estrofes, textoCompleto});
+    });
+    return lista;
+}
+
+// ===== MOSTRAR TODOS OS HINOS NA TELA =====
+function mostrarTodosHinos(listaParaMostrar = todosOsHinos) {
+    const listaEl = document.getElementById('listaHinos');
+    listaEl.innerHTML = listaParaMostrar.map(h => {
+        const indiceReal = todosOsHinos.indexOf(h);
+        return `
+            <div class="item-hino" data-index="${indiceReal}">
+                <div class="hino-num">${h.numero}.</div>
+                <div class="hino-nome">${h.titulo}</div>
+                <div class="hino-trecho">${h.textoCompleto.substring(0, 55)}...</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ===== BUSCA =====
+const inputBusca = document.getElementById('inputBusca');
+const hinoAberto = document.getElementById('hinoAberto');
+
+inputBusca.addEventListener('input', function() {
+    const termo = this.value.trim();
+    if (!termo) {
+        mostrarTodosHinos();
+        hinoAberto.classList.remove('mostrar');
+        hinoAtual = null;
+        return;
+    }
+    
+    let encontrados = [];
+    if (/^\d+$/.test(termo)) {
+        const n = parseInt(termo);
+        encontrados = todosOsHinos.filter(h => h.numero === n);
+    }
+    if (encontrados.length === 0) {
+        encontrados = todosOsHinos.filter(h =>
+            h.titulo.toLowerCase().includes(termo.toLowerCase()) ||
+            h.textoCompleto.toLowerCase().includes(termo.toLowerCase())
+        );
+    }
+    
+    if (encontrados.length) {
+        mostrarTodosHinos(encontrados);
+    } else {
+        document.getElementById('listaHinos').innerHTML = 
+            '<div style="padding:20px;text-align:center;color:var(--text-secondary)">Nenhum hino encontrado</div>';
+        hinoAberto.classList.remove('mostrar');
+        hinoAtual = null;
+    }
+});
+
+inputBusca.addEventListener('focus', () => {
+    document.getElementById('caixaBusca').classList.add('focada');
+});
+inputBusca.addEventListener('blur', () => {
+    document.getElementById('caixaBusca').classList.remove('focada');
+});
+
+// ===== ABRIR HINO ABAIXO =====
+document.addEventListener('click', function(e) {
+    const item = e.target.closest('.item-hino');
+    if (item) {
+        document.querySelectorAll('.item-hino').forEach(el => el.classList.remove('ativo'));
+        item.classList.add('ativo');
+        const index = parseInt(item.dataset.index);
+        abrirHinoAbaixo(index);
+    }
+});
+
+function abrirHinoAbaixo(index) {
+    hinoAtual = todosOsHinos[index];
+    if (!hinoAtual) return;
+    
+    document.getElementById('hinoAbertoNumero').textContent = `Hino ${hinoAtual.numero}`;
+    document.getElementById('hinoAbertoTitulo').textContent = hinoAtual.titulo;
+    
+    const conteudo = hinoAtual.estrofes.map(est => {
+        const classe = est.coro ? 'estrofe coro' : 'estrofe';
+        return `<div class="${classe}" style="font-size:${tamanhoFonte}px">${est.linhas.join('<br>')}</div>`;
+    }).join('');
+    
+    document.getElementById('hinoAbertoLetras').innerHTML = conteudo;
+    hinoAberto.classList.add('mostrar');
+    hinoAberto.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+// ===== ABRIR EM TELA CHEIA =====
+const telaCheia = document.getElementById('telaCheia');
+const papelTelaCheia = document.getElementById('papelTelaCheia');
+
+document.getElementById('btnAbrirTela').addEventListener('click', abrirTelaCheia);
+
+function abrirTelaCheia() {
+    if (!hinoAtual) return;
+    
+    papelTelaCheia.innerHTML = `
+        <div class="hino-cabecalho">
+            <div class="numero">Hino ${hinoAtual.numero}</div>
+            <h2 class="titulo">${hinoAtual.titulo}</h2>
+        </div>
+        ${hinoAtual.estrofes.map(est => {
+            const classe = est.coro ? 'estrofe coro' : 'estrofe';
+            return `<div class="${classe}" style="font-size:${tamanhoFonteTela}px">${est.linhas.join('<br>')}</div>`;
+        }).join('')}
+    `;
+    telaCheia.classList.add('aberta');
+    window.scrollTo(0, 0);
+}
+
+document.getElementById('btnFechar').addEventListener('click', function() {
+    telaCheia.classList.remove('aberta');
+});
+
+// ===== BUSCA POR VOZ =====
+const btnMic = document.getElementById('btnMic');
+let reconhecimento = null;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    reconhecimento = new SpeechRecognition();
+    reconhecimento.lang = 'pt-BR';
+    reconhecimento.continuous = false;
+    reconhecimento.interimResults = true;
+    
+    reconhecimento.onstart = () => {
+        btnMic.classList.add('gravando');
+        document.getElementById('status').textContent = '🎤 Ouvindo... fale ou cante um trecho!';
+    };
+    
+    reconhecimento.onresult = (e) => {
+        const texto = Array.from(e.results).map(r => r[0].transcript).join('');
+        inputBusca.value = texto;
+        inputBusca.dispatchEvent(new Event('input'));
+    };
+    
+    reconhecimento.onend = () => {
+        btnMic.classList.remove('gravando');
+        document.getElementById('status').textContent = '✅ Pronto! Digite ou fale outro.';
+    };
+    
+    reconhecimento.onerror = (e) => {
+        btnMic.classList.remove('gravando');
+        if (e.error !== 'no-speech') {
+            document.getElementById('status').textContent = 'Erro: ' + e.error;
+        }
+    };
+} else {
+    btnMic.style.display = 'none';
+    document.getElementById('status').textContent = 'Busca por voz não disponível. Digite para buscar.';
+}
+
+btnMic.addEventListener('click', () => {
+    if (reconhecimento) {
+        try { reconhecimento.start(); } catch(e) {}
+    }
+});
+
+// ===== TAMANHO DA FONTE — TELA PRINCIPAL =====
+const btnMais = document.getElementById('btnMais');
+const btnMenos = document.getElementById('btnMenos');
+const fonteValor = document.getElementById('fonteValor');
+
+function atualizarFonte() {
+    fonteValor.textContent = tamanhoFonte;
+    document.querySelectorAll('#hinoAberto .estrofe').forEach(el => {
+        el.style.fontSize = tamanhoFonte + 'px';
+    });
+    localStorage.setItem('tamanhoFonte', tamanhoFonte);
+}
+
+btnMais.addEventListener('click', () => {
+    if (tamanhoFonte < 26) {
+        tamanhoFonte += 2;
+        atualizarFonte();
+    }
+});
+
+btnMenos.addEventListener('click', () => {
+    if (tamanhoFonte > 14) {
+        tamanhoFonte -= 2;
+        atualizarFonte();
+    }
+});
+
+tamanhoFonte = parseInt(localStorage.getItem('tamanhoFonte') || '18');
+atualizarFonte();
+
+// ===== TAMANHO DA FONTE — TELA CHEIA =====
+const btnMaisTela = document.getElementById('btnMaisTela');
+const btnMenosTela = document.getElementById('btnMenosTela');
+const fonteValorTela = document.getElementById('fonteValorTela');
+
+function atualizarFonteTela() {
+    fonteValorTela.textContent = tamanhoFonteTela;
+    document.querySelectorAll('#papelTelaCheia .estrofe').forEach(el => {
+        el.style.fontSize = tamanhoFonteTela + 'px';
+    });
+    localStorage.setItem('tamanhoFonteTela', tamanhoFonteTela);
+}
+
+btnMaisTela.addEventListener('click', () => {
+    if (tamanhoFonteTela < 28) {
+        tamanhoFonteTela += 2;
+        atualizarFonteTela();
+    }
+});
+
+btnMenosTela.addEventListener('click', () => {
+    if (tamanhoFonteTela > 16) {
+        tamanhoFonteTela -= 2;
+        atualizarFonteTela();
+    }
+});
+
+tamanhoFonteTela = parseInt(localStorage.getItem('tamanhoFonteTela') || '20');
+fonteValorTela.textContent = tamanhoFonteTela;
+
+// ===== TEMA =====
+const seletorTema = document.getElementById('seletorTema');
+const btnMudarTema = document.getElementById('btnMudarTema');
+const botoesCor = document.querySelectorAll('.cor');
+
+btnMudarTema.addEventListener('click', () => {
+    seletorTema.classList.toggle('mostrar');
+});
+
+botoesCor.forEach(botao => {
+    botao.addEventListener('click', () => {
+        botoesCor.forEach(b => b.classList.remove('ativo'));
+        botao.classList.add('ativo');
+        
+        const tema = botao.dataset.tema;
+        document.body.classList.remove('tema-escuro', 'tema-azul', 'tema-verde', 'tema-rosa');
+        if (tema) document.body.classList.add('tema-' + tema);
+        localStorage.setItem('tema', tema);
+        seletorTema.classList.remove('mostrar');
+    });
+});
+
+const temaSalvo = localStorage.getItem('tema') || '';
+if (temaSalvo) {
+    document.body.classList.add('tema-' + temaSalvo);
+    botoesCor.forEach(b => {
+        b.classList.toggle('ativo', b.dataset.tema === temaSalvo);
+    });
+}
+
+// ===== TELA SEMPRE ACESA =====
+const btnTela = document.getElementById('btnTela');
+
+async function manterTela(ligado) {
+    try {
+        if (ligado && 'wakeLock' in navigator) {
+            bloqueioTela = await navigator.wakeLock.request('screen');
+            btnTela.classList.add('ativo');
+            telaAcesa = true;
+        } else if (bloqueioTela) {
+            await bloqueioTela.release();
+            btnTela.classList.remove('ativo');
+            telaAcesa = false;
+        }
+    } catch (err) { console.log('Wake Lock:', err); }
+}
+
+btnTela.addEventListener('click', () => {
+    manterTela(!telaAcesa);
+});
+
+document.addEventListener('visibilitychange', async () => {
+    if (telaAcesa && bloqueioTela && document.visibilityState === 'visible') {
+        try { bloqueioTela = await navigator.wakeLock.request('screen'); } catch(e) {}
+    }
+});
+
+// ===== 📲 PWA — INSTALAÇÃO =====
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => {
+        if (!localStorage.getItem('pwa_dismissed')) {
+            mostrarPromptInstalacao();
+        }
+    }, 4000);
+});
+
+function mostrarPromptInstalacao() {
+    if (!deferredPrompt) return;
+    
+    if (confirm('📲 Instalar Harpa Cristã?\n\nCrie um ícone na tela inicial e use como aplicativo.')) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                alert('✅ Instalado com sucesso! Procure na sua tela inicial.');
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        localStorage.setItem('pwa_dismissed', 'true');
+    }
+}
+
+// ===== INICIAR =====
+carregarHinos();
+
+</script>
+
+</body>
+</html>
