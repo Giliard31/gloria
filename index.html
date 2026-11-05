@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Harpa">
     <link rel="manifest" href="manifest.json">
-    <meta name="description" content="Harpa Cristã — hinos com busca por voz e letra">
+    <meta name="description" content="Harpa Cristã — hinos">
     <title>🎵 Harpa Cristã</title>
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%238b4513' rx='28'/%3E%3Ctext x='90' y='112' font-size='75' fill='white' text-anchor='middle' font-family='Arial, sans-serif'%3E🎵%3C/text%3E%3C/svg%3E">
     <style>
@@ -72,7 +72,7 @@
             filter: contrast(calc(0.9 + var(--intensidade) * 0.2)) brightness(calc(0.95 + var(--intensidade) * 0.1));
         }
 
-        /* ===== BARRA DE ROLAGEM NO TEMA ===== */
+        /* ===== BARRA DE ROLAGEM ===== */
         ::-webkit-scrollbar {width: 6px; height: 6px;}
         ::-webkit-scrollbar-track {background: var(--surface);}
         ::-webkit-scrollbar-thumb {
@@ -208,8 +208,9 @@
         }
         .btn-favorito.favoritado {color: #f59e0b; transform: scale(1.15);}
         .btn-favorito:active {transform: scale(0.9);}
+        .sem-favoritos {text-align: center; padding: 40px 20px; color: var(--text-secondary);}
 
-        /* ===== TELA CHEIA — REFEITA ===== */
+        /* ===== TELA CHEIA ===== */
         .tela-cheia {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg); z-index: 200; overflow-y: auto;
@@ -217,7 +218,6 @@
         }
         .tela-cheia.aberta {opacity: 1; visibility: visible;}
         
-        /* CABEÇALHO LIMPO — SEM FUNDO BRANCO */
         .tela-cheia-cabecalho {
             position: sticky; top: 0;
             padding: 12px 16px;
@@ -226,7 +226,6 @@
             border-bottom: 1px solid var(--border);
             z-index: 5;
         }
-        /* Esquerda — Tamanho da Letra */
         .tela-cheia-esquerda {display: flex; align-items: center; gap: 6px; min-width: 90px;}
         .tela-cheia-btn-fonte {
             background: var(--surface); border: none; width: 32px; height: 32px;
@@ -234,7 +233,6 @@
         }
         .tela-cheia-fonte-valor {min-width: 24px; text-align: center; font-size: 0.85rem; color: var(--text-secondary);}
         
-        /* Centro — NOME DO HINO */
         .tela-cheia-titulo {
             flex: 1; text-align: center;
             font-size: 1rem; font-weight: 600; color: var(--primary);
@@ -242,7 +240,6 @@
         }
         .tela-cheia-subtitulo {font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;}
         
-        /* Direita — Favorito + Tema + Fechar */
         .tela-cheia-direita {display: flex; align-items: center; gap: 4px; min-width: 90px; justify-content: flex-end;}
         .tela-cheia-btn {
             background: var(--surface); border: none; width: 32px; height: 32px;
@@ -251,7 +248,6 @@
         }
         .tela-cheia-btn.estrela.favoritado {color: #f59e0b;}
 
-        /* CONTEÚDO DO HINO — LIMPO */
         .tela-cheia-conteudo {
             max-width: 520px; margin: 0 auto; padding: 24px 24px 60px;
             background: transparent;
@@ -267,14 +263,11 @@
             background: rgba(139,69,19,0.04);
             border-radius: 4px;
         }
-        .sem-favoritos {text-align: center; padding: 40px 20px; color: var(--text-secondary);}
     </style>
 </head>
 <body>
 
-<!-- TOPO FIXO -->
 <div class="topo-fixo">
-    <!-- ABAS: TODOS OS HINOS / FAVORITOS -->
     <div class="abas-principais">
         <button class="aba ativa" id="abaTodos">📖 Todos</button>
         <button class="aba" id="abaFavoritos">⭐ Favoritos</button>
@@ -292,14 +285,12 @@
         </div>
     </div>
 
-    <!-- BARRA DE INTENSIDADE DO TEMA -->
     <div class="caixa-intensidade">
         <label>🌙 Mais suave</label>
         <input type="range" class="slider-intensidade" id="sliderIntensidade" min="0.3" max="1.5" step="0.05" value="1">
         <label>Mais forte ☀️</label>
     </div>
 
-    <!-- Seletor de Tema -->
     <div class="seletor-tema" id="seletorTema">
         <h4>Escolha a cor:</h4>
         <div class="cores">
@@ -311,7 +302,6 @@
         </div>
     </div>
 
-    <!-- Busca -->
     <div class="caixa-busca" id="caixaBusca">
         <input type="text" class="input-busca" id="inputBusca" placeholder="Nº, nome ou trecho do hino...">
         <button class="btn-mic" id="btnMic" title="Falar para buscar">🎤</button>
@@ -320,19 +310,17 @@
     <div class="status" id="status">Carregando hinos...</div>
 </div>
 
-<!-- CONTEÚDO — LISTA DE HINOS -->
 <div class="conteudo">
     <div class="mensagem" id="mensagemInicial">
         <h1>🎵 Olá! Qual hino nós iremos louvar agora?</h1>
         <p>Digite ou fale um trecho acima, ou toque no hino abaixo para ler.</p>
     </div>
+
     <div class="lista-hinos" id="listaHinos"></div>
     <div class="lista-hinos" id="listaFavoritos" style="display: none;"></div>
 </div>
 
-<!-- TELA CHEIA DO HINO -->
 <div class="tela-cheia" id="telaCheia">
-    <!-- Cabeçalho limpo: tamanho | título | favorito + tema + fechar -->
     <div class="tela-cheia-cabecalho">
         <div class="tela-cheia-esquerda">
             <button class="tela-cheia-btn-fonte" id="btnMenosFonte">A−</button>
@@ -342,13 +330,7 @@
         <div class="tela-cheia-titulo" id="tituloHinoTela">
             Hino — Título
             <div class="tela-cheia-subtitulo" id="subtituloHinoTela"></div>
-        </div>
-        <div class="tela-cheia-direita">
-            <button class="tela-cheia-btn estrela" id="btnFavoritarHino">☆</button>
-            <button class="tela-cheia-btn" id="btnFecharTela">←</button>
-        </div>
     </div>
-
     <div class="tela-cheia-conteudo" id="conteudoHinoTela"></div>
 </div>
 
@@ -380,14 +362,13 @@ sliderIntensidade.addEventListener('input', () => {
     localStorage.setItem('harpa_intensidade', sliderIntensidade.value);
 });
 
-// Carrega valor salvo
 const intensidadeSalva = localStorage.getItem('harpa_intensidade');
 if (intensidadeSalva) {
     sliderIntensidade.value = intensidadeSalva;
     document.documentElement.style.setProperty('--intensidade', intensidadeSalva);
 }
 
-// ===== ALTERNAR ABAS: TODOS / FAVORITOS =====
+// ===== ABAS: TODOS / FAVORITOS =====
 document.getElementById('abaTodos').addEventListener('click', () => {
     abaAtiva = 'todos';
     document.getElementById('abaTodos').classList.add('ativa');
@@ -408,7 +389,64 @@ document.getElementById('abaFavoritos').addEventListener('click', () => {
     mostrarFavoritos();
 });
 
-// ===== FUNÇÃO: MOSTRAR TODOS OS HINOS =====
+// ===== FUNÇÃO PARA REMOVER <br> E QUEBRAR LINHAS =====
+function limparTexto(texto) {
+    if (!texto) return '';
+    return texto.replace(/<br\s*\/?>/gi, '\n').trim();
+}
+
+// ===== CONVERTER DADOS DO JSON PARA FORMATO INTERNO =====
+function converterDadosHinos(dadosBrutos) {
+    const lista = [];
+    for (const chave in dadosBrutos) {
+        if (chave === '-1') continue; // Pula os dados do autor
+        
+        const hinoDados = dadosBrutos[chave];
+        if (!hinoDados.hino) continue;
+        
+        // Extrai número e título
+        const partesNome = hinoDados.hino.split(' - ');
+        const numero = parseInt(partesNome[0]);
+        const titulo = partesNome[1] || hinoDados.hino;
+        
+        // Processa as estrofes
+        let estrofesTexto = [];
+        if (hinoDados.verses) {
+            for (const v in hinoDados.verses) {
+                const linhas = limparTexto(hinoDados.verses[v]).split('\n');
+                estrofesTexto = estrofesTexto.concat(linhas);
+            }
+        }
+        
+        // Processa o refrão
+        const refraoTexto = limparTexto(hinoDados.coro).split('\n').filter(l => l.trim());
+        
+        // Monta o conteúdo alternando estrofe + refrão
+        const conteudoCompleto = [];
+        const linhasPorEstrofe = 4;
+        
+        for (let i = 0; i < estrofesTexto.length; i += linhasPorEstrofe) {
+            const blocoEstrofe = estrofesTexto.slice(i, i + linhasPorEstrofe).filter(l => l.trim());
+            if (blocoEstrofe.length > 0) {
+                conteudoCompleto.push(blocoEstrofe.join('\n'));
+            }
+            // Adiciona refrão depois de cada bloco de estrofe
+            if (refraoTexto.length > 0) {
+                conteudoCompleto.push('♪ ' + refraoTexto.join('\n'));
+            }
+        }
+        
+        lista.push({
+            numero,
+            titulo,
+            trecho: estrofesTexto[0] || 'Toque para ler...',
+            conteudo: conteudoCompleto
+        });
+    }
+    return lista;
+}
+
+// ===== MOSTRAR TODOS OS HINOS =====
 function mostrarTodosHinos() {
     listaHinosEl.innerHTML = '';
     todosOsHinos.forEach((hino, indice) => {
@@ -438,7 +476,7 @@ function mostrarTodosHinos() {
     });
 }
 
-// ===== FUNÇÃO: MOSTRAR SÓ FAVORITOS =====
+// ===== MOSTRAR FAVORITOS =====
 function mostrarFavoritos() {
     listaFavoritosEl.innerHTML = '';
     const hinosFavoritos = todosOsHinos.filter(h => favoritos.includes(h.numero));
@@ -479,7 +517,7 @@ function mostrarFavoritos() {
     });
 }
 
-// ===== FUNÇÃO: ALTERNAR FAVORITO =====
+// ===== ALTERNAR FAVORITO =====
 function alternarFavorito(numero) {
     const indice = favoritos.indexOf(numero);
     if (indice > -1) {
@@ -489,20 +527,18 @@ function alternarFavorito(numero) {
     }
     localStorage.setItem('harpa_favoritos', JSON.stringify(favoritos));
     
-    // Atualiza a visualização conforme aba ativa
     if (abaAtiva === 'todos') {
         mostrarTodosHinos();
     } else {
         mostrarFavoritos();
     }
     
-    // Atualiza botão na tela cheia se houver hino aberto
     if (hinoAtual && hinoAtual.numero === numero) {
         atualizarBotaoFavoritoTela(numero);
     }
 }
 
-// ===== ATUALIZA BOTÃO FAVORITO NA TELA CHEIA =====
+// ===== ATUALIZAR BOTÃO FAVORITO NA TELA =====
 function atualizarBotaoFavoritoTela(numero) {
     const ehFavorito = favoritos.includes(numero);
     btnFavoritarHino.textContent = ehFavorito ? '★' : '☆';
@@ -513,27 +549,21 @@ function atualizarBotaoFavoritoTela(numero) {
     }
 }
 
-// ===== CLICAR ESTRELA NA TELA CHEIA =====
 btnFavoritarHino.addEventListener('click', () => {
     if (hinoAtual) {
         alternarFavorito(hinoAtual.numero);
     }
 });
 
-// ===== CARREGAR HINOS DO ARQUIVO =====
 // ===== CARREGAR HINOS DO ARQUIVO JSON =====
 async function carregarHinos() {
     try {
         const resposta = await fetch('hinos.json');
         if (!resposta.ok) throw new Error('Arquivo não encontrado');
         
-        hinos = await resposta.json();
-        todosOsHinos = hinos.map(h => ({
-            numero: h.numero,
-            titulo: h.titulo,
-            trecho: h.estrofes[0] || 'Toque para ler...',
-            conteudo: montarConteudoHino(h)
-        }));
+        const dadosBrutos = await resposta.json();
+        todosOsHinos = converterDadosHinos(dadosBrutos);
+        hinos = [...todosOsHinos];
         
         mostrarTodosHinos();
         statusEl.textContent = `✅ ${hinos.length} hinos prontos! Toque em um para ler.`;
@@ -543,64 +573,14 @@ async function carregarHinos() {
     }
 }
 
-// ===== MONTAR CONTEÚDO NO FORMATO ANTIGO =====
-function montarConteudoHino(hino) {
-    const partes = [];
-    for (let i = 0; i < hino.estrofes.length; i += 4) {
-        const bloco = hino.estrofes.slice(i, i + 4);
-        partes.push(bloco.join('\n'));
-        if (hino.refrao && hino.refrao.length > 0) {
-            partes.push('♪ ' + hino.refrao.join('\n'));
-        }
-    }
-    return partes;
-}
-
-
-// ===== PARSE DO ARQUIVO =====
-function parseHinos(texto) {
-    const lista = [];
-    const blocos = texto.split(/(?=^\d+\.\s)/m);
-    
-    blocos.forEach(bloco => {
-        bloco = bloco.trim();
-        if (!bloco) return;
-        
-        const linhas = bloco.split('\n').filter(l => l.trim() !== '');
-        if (linhas.length < 2) return;
-        
-        const primeiraLinha = linhas[0].trim();
-        const match = primeiraLinha.match(/^(\d+)\.\s*(.+)$/);
-        if (!match) return;
-        
-        const numero = parseInt(match[1]);
-        const titulo = match[2];
-        const partes = bloco.split('---').map(p => p.trim()).filter(p => p);
-        
-        const trechoInicial = partes[1] ? partes[1].replace(/^♪\s*/, '').split('\n')[0] : '';
-        
-        lista.push({
-            numero,
-            titulo,
-            trecho: trechoInicial || 'Toque para ler...',
-            conteudo: partes
-        });
-    });
-    return lista;
-}
-
 // ===== ABRIR HINO EM TELA CHEIA =====
 function abrirHino(indice) {
     hinoAtual = todosOsHinos[indice];
     if (!hinoAtual) return;
     
-    // Título e subtítulo no cabeçalho
     tituloHinoTela.innerHTML = `Hino ${hinoAtual.numero}<div class="tela-cheia-subtitulo">${hinoAtual.titulo}</div>`;
-    
-    // Botão favorito atualizado
     atualizarBotaoFavoritoTela(hinoAtual.numero);
     
-    // Monta o conteúdo
     let htmlConteudo = '';
     hinoAtual.conteudo.forEach(parte => {
         const linhas = parte.split('\n').filter(l => l.trim());
@@ -637,34 +617,18 @@ function atualizarTamanhoFonte() {
 }
 
 document.getElementById('btnMais').addEventListener('click', () => {
-    if (tamanhoFonte < 28) {
-        tamanhoFonte += 2;
-        atualizarTamanhoFonte();
-    }
+    if (tamanhoFonte < 28) { tamanhoFonte += 2; atualizarTamanhoFonte(); }
 });
-
 document.getElementById('btnMenos').addEventListener('click', () => {
-    if (tamanhoFonte > 16) {
-        tamanhoFonte -= 2;
-        atualizarTamanhoFonte();
-    }
+    if (tamanhoFonte > 16) { tamanhoFonte -= 2; atualizarTamanhoFonte(); }
 });
-
 document.getElementById('btnMaisFonte').addEventListener('click', () => {
-    if (tamanhoFonte < 28) {
-        tamanhoFonte += 2;
-        atualizarTamanhoFonte();
-    }
+    if (tamanhoFonte < 28) { tamanhoFonte += 2; atualizarTamanhoFonte(); }
 });
-
 document.getElementById('btnMenosFonte').addEventListener('click', () => {
-    if (tamanhoFonte > 16) {
-        tamanhoFonte -= 2;
-        atualizarTamanhoFonte();
-    }
+    if (tamanhoFonte > 16) { tamanhoFonte -= 2; atualizarTamanhoFonte(); }
 });
 
-// Carrega tamanho salvo
 const fonteSalva = localStorage.getItem('harpa_fonte');
 if (fonteSalva) {
     tamanhoFonte = parseInt(fonteSalva);
@@ -674,10 +638,7 @@ if (fonteSalva) {
 // ===== BUSCA =====
 inputBusca.addEventListener('input', function() {
     const termo = this.value.trim();
-    if (!termo) {
-        mostrarTodosHinos();
-        return;
-    }
+    if (!termo) { mostrarTodosHinos(); return; }
     
     let encontrados = [];
     if (/^\d+$/.test(termo)) {
@@ -736,7 +697,6 @@ document.getElementById('btnMudarTema').addEventListener('click', () => {
     seletorTema.classList.toggle('mostrar');
 });
 
-// Fecha seletor de tema ao clicar fora
 document.addEventListener('click', (e) => {
     if (!e.target.closest('#btnMudarTema') && !e.target.closest('#seletorTema')) {
         seletorTema.classList.remove('mostrar');
@@ -756,7 +716,6 @@ document.querySelectorAll('.cor').forEach(corBtn => {
     });
 });
 
-// Carrega tema salvo
 const temaSalvo = localStorage.getItem('harpa_tema');
 if (temaSalvo) {
     document.body.classList.add(`tema-${temaSalvo}`);
@@ -776,8 +735,8 @@ async function manterTelaAcesa(ligar) {
             btnTela.classList.add('ativo');
             telaAcesa = true;
         } else if (bloqueioTela) {
-            await bloqueioTela.release();
-            bloqueioTela = null;
+            await bloqueio
+Tela = null;
             btnTela.classList.remove('ativo');
             telaAcesa = false;
         }
@@ -846,46 +805,6 @@ btnMic.addEventListener('click', () => {
     }
 });
 
-// ===== BOTÃO DE INSTALAR PWA =====
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    mostrarBotaoInstalar();
-});
-
-function mostrarBotaoInstalar() {
-    if (!deferredPrompt || localStorage.getItem('pwa_instalado')) return;
-    
-    statusEl.innerHTML = `
-        ✅ Pronto! 
-        <button style="margin-left:8px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer;font-size:0.85rem;" id="btnInstalar">📲 Instalar App</button>
-    `;
-    
-    setTimeout(() => {
-        const btnInstalar = document.getElementById('btnInstalar');
-        if (btnInstalar) {
-            btnInstalar.addEventListener('click', async () => {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    alert('✅ Instalado com sucesso! Procure na sua tela inicial.');
-                    localStorage.setItem('pwa_instalado', 'true');
-                } else {
-                    alert('💡 Para instalar depois, no Chrome toque nos 3 pontinhos → "Adicionar à tela inicial"');
-                }
-                deferredPrompt = null;
-            });
-        }
-    }, 100);
-}
-
-window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwa_instalado', 'true');
-    statusEl.textContent = '✅ Harpa Cristã instalada com sucesso!';
-});
-
 // ===== INICIAR =====
 carregarHinos();
 
@@ -893,5 +812,3 @@ carregarHinos();
 
 </body>
 </html>
-
-   
