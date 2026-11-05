@@ -521,19 +521,41 @@ btnFavoritarHino.addEventListener('click', () => {
 });
 
 // ===== CARREGAR HINOS DO ARQUIVO =====
+// ===== CARREGAR HINOS DO ARQUIVO JSON =====
 async function carregarHinos() {
     try {
-        const resposta = await fetch('hinos.txt');
-        if (!resposta.ok) throw new Error('Não encontrado');
-        const texto = await resposta.text();
-        hinos = parseHinos(texto);
-        todosOsHinos = [...hinos];
+        const resposta = await fetch('hinos.json');
+        if (!resposta.ok) throw new Error('Arquivo não encontrado');
+        
+        hinos = await resposta.json();
+        todosOsHinos = hinos.map(h => ({
+            numero: h.numero,
+            titulo: h.titulo,
+            trecho: h.estrofes[0] || 'Toque para ler...',
+            conteudo: montarConteudoHino(h)
+        }));
+        
         mostrarTodosHinos();
         statusEl.textContent = `✅ ${hinos.length} hinos prontos! Toque em um para ler.`;
     } catch (erro) {
-        statusEl.innerHTML = '❌ Não foi possível carregar os hinos.<br>Verifique se o arquivo <b>hinos.txt</b> está na mesma pasta.';
+        console.error(erro);
+        statusEl.innerHTML = '❌ Não foi possível carregar os hinos.<br>Verifique se o arquivo <b>hinos.json</b> está na mesma pasta.';
     }
 }
+
+// ===== MONTAR CONTEÚDO NO FORMATO ANTIGO =====
+function montarConteudoHino(hino) {
+    const partes = [];
+    for (let i = 0; i < hino.estrofes.length; i += 4) {
+        const bloco = hino.estrofes.slice(i, i + 4);
+        partes.push(bloco.join('\n'));
+        if (hino.refrao && hino.refrao.length > 0) {
+            partes.push('♪ ' + hino.refrao.join('\n'));
+        }
+    }
+    return partes;
+}
+
 
 // ===== PARSE DO ARQUIVO =====
 function parseHinos(texto) {
