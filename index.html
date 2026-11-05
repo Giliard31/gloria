@@ -71,27 +71,18 @@
             transition: background 0.3s, color 0.3s, filter 0.3s;
             filter: contrast(calc(0.9 + var(--intensidade) * 0.2)) brightness(calc(0.95 + var(--intensidade) * 0.1));
         }
-
-        /* ===== BARRA DE ROLAGEM ===== */
         ::-webkit-scrollbar {width: 6px; height: 6px;}
         ::-webkit-scrollbar-track {background: var(--surface);}
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary); 
-            border-radius: 3px;
-            opacity: 0.8;
-        }
+        ::-webkit-scrollbar-thumb {background: var(--primary); border-radius: 3px; opacity: 0.8;}
         ::-webkit-scrollbar-thumb:hover {background: var(--primary); opacity: 1;}
 
-        /* ===== TOPO FIXO ===== */
         .topo-fixo {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
             background: var(--bg); padding: 10px 16px 14px;
             border-bottom: 1px solid var(--border);
             box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-        .abas-principais {
-            display: flex; gap: 8px; margin-bottom: 10px;
-        }
+        .abas-principais {display: flex; gap: 8px; margin-bottom: 10px;}
         .aba {
             flex: 1; padding: 8px 12px; border: none; background: transparent;
             color: var(--text-secondary); border-radius: 8px;
@@ -115,7 +106,6 @@
         .btn-topo.ativo {background: rgba(139,69,19,0.12); color: var(--primary);}
         .fonte-valor {font-size: 0.8rem; min-width: 22px; text-align: center; color: var(--text-secondary);}
 
-        /* ===== CONTROLE DE INTENSIDADE ===== */
         .caixa-intensidade {
             display: flex; align-items: center; gap: 8px; margin-top: 8px;
             padding: 0 4px;
@@ -133,7 +123,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
-        /* ===== SELETOR DE TEMA ===== */
         .seletor-tema {
             position: fixed; top: 160px; right: 16px; background: var(--surface);
             border: 1px solid var(--border); border-radius: 10px; padding: 12px;
@@ -153,9 +142,7 @@
         .cor.verde {background: linear-gradient(135deg, #66bb6a, #2e7d32);}
         .cor.rosa {background: linear-gradient(135deg, #f06292, #c2185b);}
 
-        /* ===== CONTEÚDO PRINCIPAL ===== */
         .conteudo {padding-top: 200px; padding-bottom: 30px; padding-left: 16px; padding-right: 16px; max-width: 580px; margin: 0 auto;}
-
         .mensagem {text-align: center; margin-bottom: 20px;}
         .mensagem h1 {
             font-size: 1.35rem; color: var(--primary); margin-bottom: 6px; line-height: 1.4;
@@ -163,7 +150,6 @@
         }
         .mensagem p {font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;}
 
-        /* ===== CAIXA DE BUSCA ===== */
         .caixa-busca {
             display: flex; align-items: center; gap: 10px;
             background: var(--surface); padding: 12px 16px;
@@ -188,7 +174,6 @@
         }
         .status {font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 16px;}
 
-        /* ===== LISTA DE HINOS ===== */
         .lista-hinos {display: flex; flex-direction: column; gap: 6px;}
         .item-hino {
             padding: 14px 16px; background: var(--surface); border-radius: 10px;
@@ -210,7 +195,6 @@
         .btn-favorito:active {transform: scale(0.9);}
         .sem-favoritos {text-align: center; padding: 40px 20px; color: var(--text-secondary);}
 
-        /* ===== TELA CHEIA ===== */
         .tela-cheia {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg); z-index: 200; overflow-y: auto;
@@ -226,43 +210,45 @@
             border-bottom: 1px solid var(--border);
             z-index: 5;
         }
-        .tela-cheia-esquerda {display: flex; align-items: center; gap: 6px; min-width: 90px;}
+        .tela-cheia-esquerda {display: flex; align-items: center; gap: 8px; min-width: 70px;}
         .tela-cheia-btn-fonte {
-            background: var(--surface); border: none; width: 32px; height: 32px;
-            border-radius: 50%; cursor: pointer; color: var(--text); font-size: 0.85rem;
+            background: var(--surface); border: none; width: 36px; height: 36px;
+            border-radius: 50%; cursor: pointer; color: var(--text); 
+            font-size: 0.95rem; font-weight: 500;
         }
-        .tela-cheia-fonte-valor {min-width: 24px; text-align: center; font-size: 0.85rem; color: var(--text-secondary);}
-        
         .tela-cheia-titulo {
             flex: 1; text-align: center;
-            font-size: 1rem; font-weight: 600; color: var(--primary);
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--primary);
             padding: 0 8px;
         }
-        .tela-cheia-subtitulo {font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;}
-        
-        .tela-cheia-direita {display: flex; align-items: center; gap: 4px; min-width: 90px; justify-content: flex-end;}
+        .tela-cheia-direita {display: flex; align-items: center; gap: 8px; min-width: 90px; justify-content: flex-end;}
         .tela-cheia-btn {
-            background: var(--surface); border: none; width: 32px; height: 32px;
+            background: var(--surface); border: none; width: 36px; height: 36px;
             border-radius: 50%; cursor: pointer; color: var(--text);
-            font-size: 1rem; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
         }
+        .tela-cheia-btn.estrela {font-size: 1.2rem;}
         .tela-cheia-btn.estrela.favoritado {color: #f59e0b;}
 
         .tela-cheia-conteudo {
-            max-width: 520px; margin: 0 auto; padding: 24px 24px 60px;
+            max-width: 520px; margin: 0 auto; padding: 30px 24px 60px;
             background: transparent;
             min-height: calc(100vh - 60px);
         }
         .tela-cheia .estrofe {
-            text-align: center; line-height: 28px; margin-bottom: 24px;
+            text-align: center; line-height: 28px; margin-bottom: 20px;
             font-size: 1rem; transition: font-size 0.2s;
         }
         .tela-cheia .coro {
-            font-weight: 600; color: var(--coro);
-            padding: 6px 12px; margin: 10px 0;
-            background: rgba(139,69,19,0.04);
-            border-radius: 4px;
+            font-weight: 700;
+            color: var(--coro);
+            padding: 12px 16px; margin: 15px 0;
+            background: rgba(139,69,19,0.06);
+            border-radius: 6px;
+            line-height: 30px;
         }
+        .tela-cheia .coro strong {font-weight: 700;}
     </style>
 </head>
 <body>
@@ -324,22 +310,21 @@
     <div class="tela-cheia-cabecalho">
         <div class="tela-cheia-esquerda">
             <button class="tela-cheia-btn-fonte" id="btnMenosFonte">A−</button>
-            <span class="tela-cheia-fonte-valor" id="fonteValorTela">20</span>
             <button class="tela-cheia-btn-fonte" id="btnMaisFonte">A+</button>
         </div>
-        <div class="tela-cheia-titulo" id="tituloHinoTela">
-            Hino — Título
-            <div class="tela-cheia-subtitulo" id="subtituloHinoTela"></div>
-        </div>
+        <div class="tela-cheia-titulo" id="tituloHinoTela">Título do Hino</div>
         <div class="tela-cheia-direita">
             <button class="tela-cheia-btn estrela" id="btnFavoritarHino">☆</button>
             <button class="tela-cheia-btn" id="btnFecharTela">←</button>
-            </div>
+        </div>
+    </div>
     <div class="tela-cheia-conteudo" id="conteudoHinoTela"></div>
 </div>
 
 <script>
-// ===== VARIÁVEIS GLOBAIS =====
+// ==========================================
+// VARIÁVEIS
+// ==========================================
 let hinos = [];
 let todosOsHinos = [];
 let hinoAtual = null;
@@ -347,73 +332,41 @@ let tamanhoFonte = 20;
 let favoritos = JSON.parse(localStorage.getItem('harpa_favoritos') || '[]');
 let abaAtiva = 'todos';
 
-// ===== ELEMENTOS =====
+// ELEMENTOS
 const listaHinosEl = document.getElementById('listaHinos');
 const listaFavoritosEl = document.getElementById('listaFavoritos');
 const inputBusca = document.getElementById('inputBusca');
 const statusEl = document.getElementById('status');
-const telaCheia = document.getElementById('telaCheia');
+');
 const conteudoHinoTela = document.getElementById('conteudoHinoTela');
 const tituloHinoTela = document.getElementById('tituloHinoTela');
-const subtituloHinoTela = document.getElementById('subtituloHinoTela');
 const seletorTema = document.getElementById('seletorTema');
 const sliderIntensidade = document.getElementById('sliderIntensidade');
 const btnFavoritarHino = document.getElementById('btnFavoritarHino');
 
-// ===== CONTROLE DE INTENSIDADE DO TEMA =====
-sliderIntensidade.addEventListener('input', () => {
-    document.documentElement.style.setProperty('--intensidade', sliderIntensidade.value);
-    localStorage.setItem('harpa_intensidade', sliderIntensidade.value);
-});
-
-const intensidadeSalva = localStorage.getItem('harpa_intensidade');
-if (intensidadeSalva) {
-    sliderIntensidade.value = intensidadeSalva;
-    document.documentElement.style.setProperty('--intensidade', intensidadeSalva);
-}
-
-// ===== ABAS: TODOS / FAVORITOS =====
-document.getElementById('abaTodos').addEventListener('click', () => {
-    abaAtiva = 'todos';
-    document.getElementById('abaTodos').classList.add('ativa');
-    document.getElementById('abaFavoritos').classList.remove('ativa');
-    listaHinosEl.style.display = 'flex';
-    listaFavoritosEl.style.display = 'none';
-    document.getElementById('mensagemInicial').style.display = 'block';
-    mostrarTodosHinos();
-});
-
-document.getElementById('abaFavoritos').addEventListener('click', () => {
-    abaAtiva = 'favoritos';
-    document.getElementById('abaFavoritos').classList.add('ativa');
-    document.getElementById('abaTodos').classList.remove('ativa');
-    listaHinosEl.style.display = 'none';
-    listaFavoritosEl.style.display = 'flex';
-    document.getElementById('mensagemInicial').style.display = 'none';
-    mostrarFavoritos();
-});
-
-// ===== FUNÇÃO PARA REMOVER <br> E QUEBRAR LINHAS =====
+// ==========================================
+// FUNÇÕES AUXILIARES
+// ==========================================
 function limparTexto(texto) {
     if (!texto) return '';
     return texto.replace(/<br\s*\/?>/gi, '\n').trim();
 }
 
-// ===== CONVERTER DADOS DO JSON PARA FORMATO INTERNO =====
+// ==========================================
+// CONVERTER DADOS DO JSON
+// ==========================================
 function converterDadosHinos(dadosBrutos) {
     const lista = [];
     for (const chave in dadosBrutos) {
-        if (chave === '-1') continue; // Pula os dados do autor
+        if (chave === '-1') continue;
         
         const hinoDados = dadosBrutos[chave];
         if (!hinoDados.hino) continue;
         
-        // Extrai número e título
         const partesNome = hinoDados.hino.split(' - ');
         const numero = parseInt(partesNome[0]);
         const titulo = partesNome[1] || hinoDados.hino;
         
-        // Processa as estrofes
         let estrofesTexto = [];
         if (hinoDados.verses) {
             for (const v in hinoDados.verses) {
@@ -422,10 +375,8 @@ function converterDadosHinos(dadosBrutos) {
             }
         }
         
-        // Processa o refrão
         const refraoTexto = limparTexto(hinoDados.coro).split('\n').filter(l => l.trim());
         
-        // Monta o conteúdo alternando estrofe + refrão
         const conteudoCompleto = [];
         const linhasPorEstrofe = 4;
         
@@ -434,7 +385,6 @@ function converterDadosHinos(dadosBrutos) {
             if (blocoEstrofe.length > 0) {
                 conteudoCompleto.push(blocoEstrofe.join('\n'));
             }
-            // Adiciona refrão depois de cada bloco de estrofe
             if (refraoTexto.length > 0) {
                 conteudoCompleto.push('♪ ' + refraoTexto.join('\n'));
             }
@@ -450,7 +400,9 @@ function converterDadosHinos(dadosBrutos) {
     return lista;
 }
 
-// ===== MOSTRAR TODOS OS HINOS =====
+// ==========================================
+// MOSTRAR HINOS
+// ==========================================
 function mostrarTodosHinos() {
     listaHinosEl.innerHTML = '';
     todosOsHinos.forEach((hino, indice) => {
@@ -480,7 +432,6 @@ function mostrarTodosHinos() {
     });
 }
 
-// ===== MOSTRAR FAVORITOS =====
 function mostrarFavoritos() {
     listaFavoritosEl.innerHTML = '';
     const hinosFavoritos = todosOsHinos.filter(h => favoritos.includes(h.numero));
@@ -497,7 +448,6 @@ function mostrarFavoritos() {
     
     hinosFavoritos.forEach(hino => {
         const indice = todosOsHinos.findIndex(h => h.numero === hino.numero);
-        const ehFavorito = true;
         const item = document.createElement('div');
         item.className = 'item-hino';
         item.innerHTML = `
@@ -521,7 +471,9 @@ function mostrarFavoritos() {
     });
 }
 
-// ===== ALTERNAR FAVORITO =====
+// ==========================================
+// FAVORITOS
+// ==========================================
 function alternarFavorito(numero) {
     const indice = favoritos.indexOf(numero);
     if (indice > -1) {
@@ -542,7 +494,6 @@ function alternarFavorito(numero) {
     }
 }
 
-// ===== ATUALIZAR BOTÃO FAVORITO NA TELA =====
 function atualizarBotaoFavoritoTela(numero) {
     const ehFavorito = favoritos.includes(numero);
     btnFavoritarHino.textContent = ehFavorito ? '★' : '☆';
@@ -559,7 +510,9 @@ btnFavoritarHino.addEventListener('click', () => {
     }
 });
 
-// ===== CARREGAR HINOS DO ARQUIVO JSON =====
+// ==========================================
+// CARREGAR HINOS
+// ==========================================
 async function carregarHinos() {
     try {
         const resposta = await fetch('hinos.json');
@@ -577,24 +530,31 @@ async function carregarHinos() {
     }
 }
 
-// ===== ABRIR HINO EM TELA CHEIA =====
+// ==========================================
+// ABRIR HINO
+// ==========================================
 function abrirHino(indice) {
     hinoAtual = todosOsHinos[indice];
     if (!hinoAtual) return;
     
-    tituloHinoTela.innerHTML = `Hino ${hinoAtual.numero}<div class="tela-cheia-subtitulo">${hinoAtual.titulo}</div>`;
+    tituloHinoTela.innerHTML = `${hinoAtual.numero} — ${hinoAtual.titulo}`;
     atualizarBotaoFavoritoTela(hinoAtual.numero);
     
     let htmlConteudo = '';
     hinoAtual.conteudo.forEach(parte => {
-        const linhas = parte.split('\n').filter(l => l.trim());
-        linhas.forEach(linha => {
-            if (linha.startsWith('♪')) {
-                htmlConteudo += `<div class="estrofe coro" style="font-size:${tamanhoFonte}px">${linha.replace('♪ ', '')}</div>`;
-            } else {
+        if (parte.startsWith('♪ ')) {
+            const linhas = parte.replace('♪ ', '').split('\n').filter(l => l.trim());
+            htmlConteudo += `<div class="estrofe coro" style="font-size:${tamanhoFonte}px">`;
+            linhas.forEach(linha => {
+                htmlConteudo += `<strong>${linha}</strong><br>`;
+            });
+            htmlConteudo += `</div>`;
+        } else {
+            const linhas = parte.split('\n').filter(l => l.trim());
+            linhas.forEach(linha => {
                 htmlConteudo += `<div class="estrofe" style="font-size:${tamanhoFonte}px">${linha}</div>`;
-            }
-        });
+            });
+        }
     });
     
     conteudoHinoTela.innerHTML = htmlConteudo;
@@ -602,16 +562,19 @@ function abrirHino(indice) {
     window.scrollTo(0, 0);
 }
 
-// ===== FECHAR TELA CHEIA =====
+// ==========================================
+// FECHAR HINO
+// ==========================================
 document.getElementById('btnFecharTela').addEventListener('click', () => {
     telaCheia.classList.remove('aberta');
     hinoAtual = null;
 });
 
-// ===== TAMANHO DA FONTE =====
+// ==========================================
+// TAMANHO DA FONTE
+// ==========================================
 function atualizarTamanhoFonte() {
     document.getElementById('fonteValor').textContent = tamanhoFonte;
-    document.getElementById('fonteValorTela').textContent = tamanhoFonte;
     if (hinoAtual) {
         conteudoHinoTela.querySelectorAll('.estrofe').forEach(el => {
             el.style.fontSize = tamanhoFonte + 'px';
@@ -639,7 +602,9 @@ if (fonteSalva) {
     atualizarTamanhoFonte();
 }
 
-// ===== BUSCA =====
+// ==========================================
+// BUSCA
+// ==========================================
 inputBusca.addEventListener('input', function() {
     const termo = this.value.trim();
     if (!termo) { mostrarTodosHinos(); return; }
@@ -691,77 +656,9 @@ inputBusca.addEventListener('input', function() {
     }
 });
 
-// ===== FOCO NA BUSCA =====
-const caixaBusca = document.getElementById('caixaBusca');
-inputBusca.addEventListener('focus', () => caixaBusca.classList.add('focada'));
-inputBusca.addEventListener('blur', () => caixaBusca.classList.remove('focada'));
-
-// ===== MUDAR TEMA =====
-document.getElementById('btnMudarTema').addEventListener('click', () => {
-    seletorTema.classList.toggle('mostrar');
-});
-
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('#btnMudarTema') && !e.target.closest('#seletorTema')) {
-        seletorTema.classList.remove('mostrar');
-    }
-});
-
-document.querySelectorAll('.cor').forEach(corBtn => {
-    corBtn.addEventListener('click', () => {
-        document.querySelectorAll('.cor').forEach(c => c.classList.remove('ativo'));
-        corBtn.classList.add('ativo');
-        
-        const tema = corBtn.dataset.tema;
-        document.body.classList.remove('tema-escuro', 'tema-azul', 'tema-verde', 'tema-rosa');
-        if (tema) document.body.classList.add(`tema-${tema}`);
-        localStorage.setItem('harpa_tema', tema);
-        seletorTema.classList.remove('mostrar');
-    });
-});
-
-const temaSalvo = localStorage.getItem('harpa_tema');
-if (temaSalvo) {
-    document.body.classList.add(`tema-${temaSalvo}`);
-    document.querySelectorAll('.cor').forEach(c => c.classList.remove('ativo'));
-    document.querySelector(`.cor[data-tema="${temaSalvo}"]`)?.classList.add('ativo');
-}
-
-// ===== TELA SEMPRE ACESA =====
-const btnTela = document.getElementById('btnTela');
-let telaAcesa = false;
-let bloqueioTela = null;
-
-async function manterTelaAcesa(ligar) {
-    try {
-        if (ligar && ('wakeLock' in navigator)) {
-            bloqueioTela = await navigator.wakeLock.request('screen');
-            btnTela.classList.add('ativo');
-            telaAcesa = true;
-        } else if (bloqueioTela) {
-            await bloqueio
-Tela = null;
-            btnTela.classList.remove('ativo');
-            telaAcesa = false;
-        }
-    } catch (err) {
-        console.log('Bloqueio de tela não disponível:', err);
-    }
-}
-
-btnTela.addEventListener('click', () => {
-    manterTelaAcesa(!telaAcesa);
-});
-
-document.addEventListener('visibilitychange', async () => {
-    if (bloqueioTela !== null && document.visibilityState === 'visible') {
-        try {
-            bloqueioTela = await navigator.wakeLock.request('screen');
-        } catch (err) {}
-    }
-});
-
-// ===== BUSCA POR VOZ =====
+// ==========================================
+// BUSCA POR VOZ
+// ==========================================
 const btnMic = document.getElementById('btnMic');
 let reconhecimento = null;
 
@@ -785,7 +682,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
     reconhecimento.onend = () => {
         btnMic.classList.remove('gravando');
-        statusEl.textContent = '✅ Pronto! Toque em um hino para ler.';
+        statusEl.textContent = `✅ ${hinos.length} hinos prontos!`;
     };
 
     reconhecimento.onerror = (e) => {
@@ -803,13 +700,117 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
 btnMic.addEventListener('click', () => {
     if (reconhecimento) {
-        try {
-            reconhecimento.start();
-        } catch (e) {}
+        try { reconhecimento.start(); } catch (e) {}
     }
 });
 
-// ===== INICIAR =====
+// ==========================================
+// ABAS
+// ==========================================
+document.getElementById('abaTodos').addEventListener('click', () => {
+    abaAtiva = 'todos';
+    document.getElementById('abaTodos').classList.add('ativa');
+    document.getElementById('abaFavoritos').classList.remove('ativa');
+    listaHinosEl.style.display = 'flex';
+    listaFavoritosEl.style.display = 'none';
+    document.getElementById('mensagemInicial').style.display = 'block';
+    mostrarTodosHinos();
+});
+
+document.getElementById('abaFavoritos').addEventListener('click', () => {
+    abaAtiva = 'favoritos';
+    document.getElementById('abaFavoritos').classList.add('ativa');
+    document.getElementById('abaTodos').classList.remove('ativa');
+    listaHinosEl.style.display = 'none';
+    listaFavoritosEl.style.display = 'flex';
+    document.getElementById('mensagemInicial').style.display = 'none';
+    mostrarFavoritos();
+});
+
+// ==========================================
+// TEMA E INTENSIDADE
+// ==========================================
+sliderIntensidade.addEventListener('input', () => {
+    document.documentElement.style.setProperty('--intensidade', sliderIntensidade.value);
+    localStorage.setItem('harpa_intensidade', sliderIntensidade.value);
+});
+
+const intensidadeSalva = localStorage.getItem('harpa_intensidade');
+if (intensidadeSalva) {
+    sliderIntensidade.value = intensidadeSalva;
+    document.documentElement.style.setProperty('--intensidade', intensidadeSalva);
+}
+
+document.getElementById('btnMudarTema').addEventListener('click', () => {
+    seletorTema.classList.toggle('mostrar');
+});
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#btnMudarTema') && !e.target.closest('#seletorTema')) {
+        seletorTema.classList.remove('mostrar');
+    }
+});
+
+document.querySelectorAll('.cor').forEach(corBtn => {
+    corBtn.addEventListener('click', () => {
+        document.querySelectorAll('.cor').forEach(c => c.classList.remove('ativo'));
+       
+        corBtn.classList.add('ativo');
+        
+        const tema = corBtn.dataset.tema;
+        document.body.classList.remove('tema-escuro', 'tema-azul', 'tema-verde', 'tema-rosa');
+        if (tema) document.body.classList.add(`tema-${tema}`);
+        localStorage.setItem('harpa_tema', tema);
+        seletorTema.classList.remove('mostrar');
+    });
+});
+
+const temaSalvo = localStorage.getItem('harpa_tema');
+if (temaSalvo) {
+    document.body.classList.add(`tema-${temaSalvo}`);
+    document.querySelectorAll('.cor').forEach(c => c.classList.remove('ativo'));
+    document.querySelector(`.cor[data-tema="${temaSalvo}"]`)?.classList.add('ativo');
+}
+
+// ==========================================
+// TELA SEMPRE ACESA
+// ==========================================
+const btnTela = document.getElementById('btnTela');
+let telaAcesa = false;
+let bloqueioTela = null;
+
+async function manterTelaAcesa(ligar) {
+    try {
+        if (ligar && ('wakeLock' in navigator)) {
+            bloqueioTela = await navigator.wakeLock.request('screen');
+            btnTela.classList.add('ativo');
+            telaAcesa = true;
+        } else if (bloqueioTela) {
+            await bloqueioTela.release();
+            bloqueioTela = null;
+            btnTela.classList.remove('ativo');
+            telaAcesa = false;
+        }
+    } catch (err) {
+        console.log('Bloqueio de tela não disponível:', err);
+    }
+}
+
+btnTela.addEventListener('click', () => {
+    manterTelaAcesa(!telaAcesa);
+});
+
+document.addEventListener('visibilitychange', async () => {
+    if (bloqueioTela !== null && document.visibilityState === 'visible') {
+        try {
+            bloqueioTela = await navigator.wakeLock.request('screen');
+        } catch (err) {}
+    }
+});
+
+// ==========================================
+// INICIAR APLICAÇÃO
+// ==========================================
 carregarHinos();
 
 </script>
